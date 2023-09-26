@@ -85,6 +85,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
         const tooltipModel = curContextObj.tooltip;
         if (tooltipModel.opacity === 0) {
             tooltipEl.style.opacity = 0;
+            document.body.removeChild(tooltipEl);
             return;
         }
 
@@ -171,7 +172,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                     }
                 });
                 curContextObj.chart.config._config.data.datasets[selectedBarElement].backgroundColor = CONSTANT['COIN_COLORS'][selected[0]["label"].replace("-USD", "")][0];
-                if (selectedCoin === "ALL") {
+                if (selectedCoin === "All Coins") {
                     innerHtml += `<tr><td class='text-grey-text flex flex-row items-center mx-2 mt-1 pb-4'>
                             <div class='w-2 h-2 rounded-full mr-2.5 border-solid bg-[#eee]'></div>Other
                       </td>`;
@@ -180,7 +181,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                         }</td></tr>`;
 
                     innerHtml += `<tr class='bg-dropdown-content-hover'><td class='text-grey-text flex flex-row items-center mx-2 my-1'>
-                <div class='w-2 h-2 rounded-full mr-2.5 mb-2.5'>=</div>Total
+                        <div class='w-2 h-2 rounded-full mr-2.5 mb-2.5'>=</div>Total
                       </td>`;
                     innerHtml += `<td class='text-grey-text text-right m-1 pr-5'>${formattedNum(totalMarketValue, true)}</td>`;
                     innerHtml += `<td class='flex flex-row justify-end mx-2 my-1'>100%</td></tr>`;
@@ -326,10 +327,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                 ctx.save();
                 var xAxis = chart.scales["x"];
 
-                var barArray =
-                    selectedCoin === "ALL"
-                        ? chart.getDatasetMeta(coins.length - 1).data
-                        : chart.getDatasetMeta(0).data;
+                var barArray = chart.getDatasetMeta(chartData.datasets.length - 1).data
                 
                 xAxis.ticks.forEach((v, i) => {
                     const { x, y } = barArray[v.value];

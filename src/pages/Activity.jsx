@@ -1,13 +1,17 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { DydxClient } from "@dydxprotocol/v3-client";
 import Web3 from "web3";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import * as CONSTANT from "../constants";
-import BarChart from "../components/BarChart"
-import DropDown from "../components/DropDown"
-import * as env from "../env"
+import BarChart from "../components/BarChart";
+import DropDown from "../components/DropDown";
+import CoinsMenu from "../components/DropDown/CoinsMenu";
+import * as env from "../env";
+
+import { CoinListContext } from "../contexts/CoinListContext";
+import { getCoins } from "../common";
 
 const HTTP_HOST = env.API_URL;
 
@@ -22,70 +26,73 @@ const client = new DydxClient(HTTP_HOST, {
   },
 });
 
-const DISPLAY_X_COUNT = 100;
+const DISPLAY_COUNT_LIST = {
+  20: "Last 20",
+  50: "Last 50",
+  70: "Last 70",
+  100: "Last 100",
+};
+
+const BORDER_RADIUS = {
+  20: 7,
+  50: 5,
+  70: 4,
+  100: 3,
+};
 
 const Activity = () => {
   const [coins, setCoins] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState("15MINS");
-  const [selectedCoin, setSelectedCoin] = useState("ALL");
+  const [selectedCoin, setSelectedCoin] = useState("All Coins");
+  const [selectedDisplay, setSelectedDisplay] = useState("100");
   const [chartData, setChartData] = useState([]);
   const [candleData, setCandleData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [timeLabel, setTimeLabel] = useState([])
+  const [timeLabel, setTimeLabel] = useState([]);
 
-  const [coinData, setCoinData] = useState ([])
-
+  const [coinData, setCoinData] = useState([]);
+  const { selectedCoinList, setSelectedCoinList } = useContext (CoinListContext)
+  console.log (selectedCoinList.length, ">>>>>")
   const timeInterval = useRef(undefined);
-
-  useEffect(() => {
-    setLoading(true);
-    client.public
-      .getMarkets()
-      .then((data) => {
-        let tmpCoins = Object.keys(data.markets).map(
-          (key) => data["markets"][key]
-        );
-        tmpCoins.sort((a, b) => {
-          if (Number(a["volume24H"]) < Number(b["volume24H"])) return 1;
-          else return -1;
-        });
-        tmpCoins = tmpCoins.filter((m) => {
-          if (m["baseAsset"] !== "LUNA") return true;
-          return false;
-        });
-        setCoinData (tmpCoins.map((coin) => {
-          return {
-            key: coin["market"],
-            value: coin["baseAsset"]
-          }
-        }))
-        setCoins(tmpCoins);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+  const DISPLAY_X_COUNT = parseInt(selectedDisplay);
+  const getCoinsData = useCallback(async () => {
+    try {
+      const data = await getCoins()
+      
+      setCoinData(data.map((coin) => {
+        return {
+          key: coin["market"],
+          value: coin["baseAsset"],
+        };
+      }));
+      setCoins(data);
+      setSelectedCoinList (data.map((coin)=>coin['market'].replace('-USD', '')))
+    } catch (e) {
+      console.log ("getCoins ===> ", e)
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    if (timeInterval.current) clearInterval(timeInterval.current);
+    getCoinsData();
+  }, [getCoinsData]);
 
-    async function fetchCandleData() {
+  useEffect(() => {
+    if (timeInterval.current) clearInterval(timeInterval.current);
+    if (selectedCoinList.length > 0) setLoading(true);
+    else {
+      setCandleData([]);
+      return;
+    }
+    async function fetchCandleData() { console.log (selectedCoinList.length, "PPPPPPPPP")
       let tmp = [];
-      if (selectedCoin === "ALL") {
-        for (let coin of coins) {
-          const data = await client.public.getCandles({
-            market: coin.market,
-            resolution: selectedInterval,
-          });
-          tmp.push(data.candles);
-        }
-      } else {
+      for (let coin of selectedCoinList) {
         const data = await client.public.getCandles({
-          market: selectedCoin,
+          market: coin + "-USD",
           resolution: selectedInterval,
         });
-        tmp = data.candles;
+        tmp.push(data.candles);
       }
       setCandleData(tmp);
     }
@@ -93,123 +100,109 @@ const Activity = () => {
       async () => await fetchCandleData(),
       CONSTANT["INTERVAL"][selectedInterval][1]
     );
-    if (coins.length > 0) fetchCandleData();
-  }, [coins, selectedCoin, selectedInterval]);
+    fetchCandleData();
+  }, [selectedCoinList, selectedInterval]);
 
-  useEffect(() => {
-    if (candleData.length === 0) return;
+  const getDataSet = useCallback(() => {
+    if (candleData.length === 0) {
+      setLoading(false);
+      setChartData({});
+      return;
+    }
 
     let tmp;
     if (
-      selectedCoin === "ALL" &&
+      selectedCoinList.length > 0 &&
       candleData[0][0] &&
       candleData[0][0]["startedAt"]
     )
       tmp = candleData[0];
-    else if (selectedCoin !== "ALL" && candleData[0]["startedAt"])
-      tmp = candleData;
-    else return;
-    let tmpLabel = []; let tmpTimeLabel = [];
+    else {
+      setLoading(false);
+      setChartData({});
+      return;
+    }
+    let tmpLabel = [];
+    let tmpTimeLabel = [];
     let pamId = 0;
     if (selectedInterval !== "1DAY") pamId = 1;
     for (let i = 0; i < DISPLAY_X_COUNT; i++) {
       let c = tmp[DISPLAY_X_COUNT - i - 1];
       let time = new Date(c["startedAt"]);
       let utcValue = time.valueOf() - time.getTimezoneOffset() * 60000;
-      tmpTimeLabel.push (utcValue)
+      tmpTimeLabel.push(utcValue);
       let startAt = new Date(utcValue).toJSON();
       let pams = startAt.slice(0, startAt.length - 8).split("T");
       tmpLabel.push(pams[pamId]);
     }
-    setTimeLabel (tmpTimeLabel)
+    setTimeLabel(tmpTimeLabel);
 
     let tmpDataset = [];
-    if (selectedCoin === "ALL") {
-      for (let c of candleData) {
-        let d = {};
-        d["label"] = c[0]["market"];
-        d["data"] = c
-          .slice(0, DISPLAY_X_COUNT)
-          .reverse()
-          .map((item) => item["usdVolume"]);
-        d["backgroundColor"] =
-          CONSTANT["COIN_COLORS"][d["label"].replace("-USD", "")][0];
-        d["stack"] = "Stack 0";
-        tmpDataset.push(d);
-      }
-    } else {
+    for (let c of candleData) {
       let d = {};
-      d["label"] = candleData[0]["market"];
-      d["data"] = candleData
+      d["label"] = c[0]["market"];
+      d["data"] = c
         .slice(0, DISPLAY_X_COUNT)
         .reverse()
         .map((item) => item["usdVolume"]);
       d["backgroundColor"] =
         CONSTANT["COIN_COLORS"][d["label"].replace("-USD", "")][0];
       d["stack"] = "Stack 0";
+      d["borderRadius"] = BORDER_RADIUS[selectedDisplay];
       tmpDataset.push(d);
     }
-    setChartData({ 
+    setChartData({
       labels: tmpLabel,
       datasets: tmpDataset,
     });
     setLoading(false);
-  }, [candleData]);
+  }, [candleData, DISPLAY_X_COUNT]);
+
+  useEffect(() => {
+    getDataSet();
+  }, [getDataSet]);
 
   return (
     <div className="flex flex-col rounded-sm w-full bg-[#12121A] p-[112px] w-full h-full">
-      <div className="flex flex-row px-[18px] py-[24px] space-x-3 bg-[#1C1C28] rounded-t-lg border border-[#454258]">
-        {/* {coins.length > 0 ? ( */}
-        <DropDown 
-          data={coinData}
-          type="coin"
-          setLoading={setLoading}
-          btnstr="ALL"
-          width={114}
-          defaultValue={selectedCoin}
-          setSelectedValue={(value)=>{setSelectedCoin(value)}}
-        />
-        <DropDown 
-          data={[
-            {key: "Active Accounts", value: "Active Accounts"},
-            {key: "Fees Paid", value: "Fees Paid"},
-          ]} 
-          type="volume" 
-          setLoading={setLoading}
-          btnstr="Volume"
-          width={152}
-          setSelectedValue={(value)=>{setLoading(false)}}
-        />
-        <DropDown 
-          data={[
-            {key: "Long Position", value: "Long Position"},
-            {key: "Short Position", value: "Short Position"},
-          ]} 
-          type="position"
-          setLoading={setLoading}
-          btnstr="All Positions"
-          width={145}
-          setSelectedValue={(value)=>{setLoading(false)}}
-        />
-        <DropDown 
-          data={
-            Object.keys(CONSTANT["INTERVAL"])?.map((key, idx) => {
-              return {key: key, value:CONSTANT["INTERVAL"][key][0]}
-            })
-          } 
-          type="interval"
+      <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-[#1C1C28] rounded-t-lg border border-[#454258]">
+        <div className="flex flex-row space-x-3">
+          <CoinsMenu
+            data={coinData}
+            width={114}
+            defaultValue={selectedCoin}
+          />
+          <DropDown
+            data={Object.keys(CONSTANT["INTERVAL"])?.map((key, idx) => {
+              return { key: key, value: CONSTANT["INTERVAL"][key][0] };
+            })}
+            type="interval"
+            setLoading={setLoading}
+            btnstr=""
+            defaultValue={"15MINS"}
+            width={77}
+            setSelectedValue={(value) => {
+              setSelectedInterval(value);
+            }}
+          />
+        </div>
+        <DropDown
+          data={Object.keys(DISPLAY_COUNT_LIST).map((key, idx) => {
+            return { key: key, value: DISPLAY_COUNT_LIST[key] };
+          })}
+          type="display"
           setLoading={setLoading}
           btnstr=""
-          defaultValue={"15MINS"}
-          width={77}
-          setSelectedValue={(value)=>{setSelectedInterval(value)}}
+          defaultValue={"100"}
+          width={110}
+          setSelectedValue={(value) => {
+            setSelectedDisplay(value);
+          }}
         />
       </div>
-      {loading ||
-      !(chartData && chartData.datasets && chartData.datasets.length > 0) ? (
+      {loading && (
         <div
           className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
-          style={{ height: "calc(100vh - 369px)" }}
+          style={{ height: "calc(100vh - 409px)" }}
         >
           <Skeleton
             baseColor="#232334"
@@ -217,21 +210,36 @@ const Activity = () => {
             highlightColor="#444157"
           />
         </div>
-      ) : (
-        <div
-          className="px-5 py-8 border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
-          style={{ height: "calc(100vh - 369px)" }}
-        >
-          <BarChart
-            selectedCoin={selectedCoin}
-            chartData={chartData}
-            coins={coins}
-            timeLabel={timeLabel}
-            setLoading={setLoading}
-            setSelectedValue={(value)=>{setSelectedCoin(value)}}
-          />
-        </div>
       )}
+      {!loading &&
+        !(chartData && chartData.datasets && chartData.datasets.length > 0) && (
+          <div
+            className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
+            style={{ height: "calc(100vh - 409px)" }}
+          >
+            No display data
+          </div>
+        )}
+      {!loading &&
+        chartData &&
+        chartData.datasets &&
+        chartData.datasets.length > 0 && (
+          <div
+            className="px-5 py-8 border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
+            style={{ height: "calc(100vh - 409px)" }}
+          >
+            <BarChart
+              selectedCoin={selectedCoin}
+              chartData={chartData}
+              coins={coins}
+              timeLabel={timeLabel}
+              setLoading={setLoading}
+              setSelectedValue={(value) => {
+                setSelectedCoin(value);
+              }}
+            />
+          </div>
+        )}
     </div>
   );
 };
