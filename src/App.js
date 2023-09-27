@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <CoinListContext.Provider value={contextValue}>
-      <section className="bg-body-bgcolor min-h-screen">
+      <section className="bg-secondary min-h-screen">
         <div className="flex flex-col">
           <BrowserRouter>
             <Header />
@@ -32,6 +32,3 @@ export default function App() {
     </CoinListContext.Provider>
   );
 }
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
