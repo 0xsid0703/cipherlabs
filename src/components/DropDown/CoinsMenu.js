@@ -1,14 +1,22 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
+import clsx from 'clsx'
 import * as CONSTANT from "../../constants";
+import Item from './Item'
 
-const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSelectedValue }) => {
+import { CoinListContext } from "../../contexts/CoinListContext";
+
+const CoinsMenu = ({ data,  width, defaultValue }) => {
+    const { selectedCoinList, setSelectedCoinList } = useContext (CoinListContext)
     const [dropDownSelected, setDropDownSelected] = useState(false)
+    const [toggle, setToggle] = useState (true)
     const [selected, setSelected] = useState(defaultValue)
 
     const wrapperRef = useRef(null);
+    const wrapperDrop = useRef (null)
 
+    const totalCoinList = data.map((item) => item['value'])
     let keyValueData = {}
     data.map((item) => { keyValueData[item.key] = item.value })
 
@@ -18,7 +26,7 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
 
     const handleClickOutside = (event) => {
         try {
-            if (wrapperRef && !wrapperRef.current.contains(event.target)) {
+            if (wrapperRef && !wrapperRef.current.contains(event.target) && wrapperDrop && !wrapperDrop.current.contains(event.target)) {
                 setDropDownSelected(false);
             }
         } catch (e) {
@@ -33,6 +41,11 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
         };
     }, []);
 
+    useEffect (() => {
+        if (toggle) setSelectedCoinList (totalCoinList)
+        else setSelectedCoinList ([])
+    }, [toggle])
+
     return (
         <div>
             <button
@@ -42,11 +55,13 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
                 style={{width: `${width}px`}}
                 type="button"
                 onClick={() => {
-                    setDropDownSelected(!dropDownSelected);
+                    setDropDownSelected(!dropDownSelected)
                 }}
                 ref={wrapperRef}
             >
-                {keyValueData[selected] ? keyValueData[selected] + " " : btnstr}
+                {
+                    selected === "All Coins" ? "All Coins" : selected.replace("-USD", "")
+                }
                 <svg
                     className="w-2.5 h-2.5 ml-2.5"
                     aria-hidden="true"
@@ -70,27 +85,35 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
                         ? `z-10 bg-grey-thick border absolute border-grey-weak divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 mt-[8px] overflow-y-auto`
                         : `hidden`
                 }
-                style={{width: `${width}px`}}
+                ref={wrapperDrop}
             >
                 <ul
-                    className={`py-2 text-sm text-tab-active-color font-medium dark:text-gray-200`}
+                    className={`py-2 text-sm text-tab-active-color font-medium dark:text-gray-200 grid grid-rows-10 grid-flow-col gap-x-[30px]`}
                     aria-labelledby="dropdownButton"
                 >
+                    <li>
+                        <a
+                            key="-1"
+                            className="flex flex-row items-center px-4 py-2 hover:bg-dropdown-content-hover dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                            onClick={() => {
+                                // setLoading(true);
+                                // setSelected("All Coins");
+                                // setSelectedValue ("All Coins")
+                                setToggle (!toggle)
+                            }}
+                        >
+                            <div className={clsx(`w-[6px] h-[6px] rounded-full mr-2 border border-[#fff] ${toggle ? "scale-150" : "scale-100"}`)}
+                                style={{backgroundColor: selectedCoinList && toggle && selectedCoinList.length === data.length && data.length > 0 ? 'white' : "transparent"}}
+                            />
+                            All Coins
+                        </a>
+                    </li>
                     {data?.map((item, idx) => (
-                        <li>
-                            <a
-                                key={idx}
-                                className="flex flex-row items-center px-4 py-2 hover:bg-dropdown-content-hover dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
-                                onClick={() => {
-                                    setLoading(true)
-                                    setDropDownSelected(false)
-                                    setSelected(item["key"])
-                                    setSelectedValue (item["key"])
-                                }}
-                            >
-                                {item["value"]}
-                            </a>
-                        </li>
+                        <Item key={idx} 
+                            borderColor={CONSTANT["COIN_COLORS"][item["value"]][0]}
+                            valueStr={item["value"]}
+                            clearToggle={toggle}
+                        />
                     ))}
                 </ul>
             </div>
@@ -98,4 +121,4 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
     )
 }
 
-export default DropDown
+export default CoinsMenu

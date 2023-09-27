@@ -24,16 +24,16 @@ export const formattedNum = (number, usd = false, acceptNegatives = false, bexp 
 
     if (bexp) {
         if (num > 1000000000000) {
-            return (usd ? '$' : '') + toK((num / 1000000000000).toFixed(2), 2) + " T"
+            return (usd ? '$' : '') + toK((num / 1000000000000).toFixed(1), 2) + " T"
         }
         if (num > 1000000000) {
-            return (usd ? '$' : '') + toK((num / 1000000000).toFixed(2), 2) + " B"
+            return (usd ? '$' : '') + toK((num / 1000000000).toFixed(1), 2) + " B"
         }
         if (num > 1000000) {
-            return (usd ? '$' : '') + toK((num / 1000000).toFixed(2), 2) + " M"
+            return (usd ? '$' : '') + toK((num / 1000000).toFixed(1), 2) + " M"
         }
         if (num > 5000) {
-            return (usd ? '$' : '') + toK((num / 1000).toFixed(2), 2) + " K"
+            return (usd ? '$' : '') + toK((num / 1000).toFixed(1), 2) + " K"
         }
     }
 

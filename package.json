@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^4.3.0",
     "chartjs-plugin-zoom": "^2.0.1",
+    "clsx": "^2.0.0",
     "flowbite": "^1.6.6",
     "flowbite-react": "^0.4.9",
     "fs": "^0.0.1-security",
