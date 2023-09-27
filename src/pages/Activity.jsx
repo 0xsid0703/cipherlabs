@@ -115,7 +115,7 @@ const Activity = () => {
   }, [selectedCoinList, selectedInterval]);
 
   useEffect(() => {
-    if (below800) setSelectedDisplay("20");
+    if (below800) setSelectedDisplay("10");
     else setSelectedDisplay("100");
   }, [below800]);
 
