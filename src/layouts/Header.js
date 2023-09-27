@@ -62,7 +62,7 @@ const Header = () => {
   }, [toggle]);
   return (
     <div className="">
-      <header className="flex flex-row justify-between px-5 py-5 border-b border-[#454258] bg-[#171722]">
+      <header className="flex flex-row justify-between px-5 py-5 border-b border-primary bg-[#171722]">
         <Link to="/" className="w-[20%] flex flex-row items-center gap-[14px] self-center hover:cursor-pointer">
           <img src={Logo} />
           <img src={CipherLabsLogo} />

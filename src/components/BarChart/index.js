@@ -28,11 +28,25 @@ ChartJS.register(
 const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue, setLoading }) => {
     let totalMarketValue = 0;
     let otherValue = 0;
+    const [average, setAverage] = useState (0)
     const curContext = useRef(null)
 
     const setCurContext = useCallback((context) => {
         curContext.current = context
-    });
+    }, []);
+
+    useEffect (() => {
+        let sum = 0
+        for (let ds of chartData.datasets) {
+            let p = 0
+            for (let d of ds.data) {
+                p += Number (d)
+            }
+            if (ds.data.length > 0) sum += p/ds.data.length
+        }
+
+        setAverage (sum);
+    })
 
     const calculateSelectedBarElement = (el) => {
         if (el === undefined || el.length === 0) return -1
@@ -77,7 +91,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
             "py-5",
             "absolute",
             "rounded-md",
-            "bg-chart-tooltip-color",
+            "bg-chart-tooltip",
             "w-330"
         );
 
@@ -103,7 +117,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
 
         // Set Text
         if (tooltipModel.body) {
-            
+
             const titleLines = tooltipModel.title || [];
             const bodyLines = tooltipModel.body.map(getBody);
 
@@ -117,25 +131,25 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                         title = timeLabelFormat(timeLabel[element[0]['index']])
                     }
                     innerHtml +=
-                        "<thead class='text-tab-active-color font-semibold'>";
+                        "<thead class='text-primary font-semibold'>";
                     innerHtml += `<tr><td  colspan="2" class="text-white text-[10px] mx-4 pb-4">${title}</td></tr>`;
 
                     if (selectedBarElement > -1) {
                         const b = bodyLines[selectedBarElement]
-                        innerHtml += `<tr class='border-b-2 border-solid border-grey-weak text-xs'><td class='text-grey-text flex flex-row items-center mx-2 pb-4'>
+                        innerHtml += `<tr class='border-b-2 border-solid border-primary text-xs'><td class='text-secondary flex flex-row items-center mx-2 pb-4'>
                                             <div class='w-2 h-2 rounded-full mr-2.5 border-solid' style="background-color: ${CONSTANT['COIN_COLORS'][b[0]["label"].replace("-USD", "")][0]}"></div>
                                             ${b[0]["label"].replace("-USD", "")}
                                     </td>`;
-                        innerHtml += `<td class='text-grey-text text-right pr-5 mx-1 pb-4'>${formattedNum(b[2], true)}</td>`;
+                        innerHtml += `<td class='text-secondary text-right pr-5 mx-1 pb-4'>${formattedNum(b[2], true)}</td>`;
                         innerHtml += `<td class='text-right mr-1 pr-2 pb-4'>${((Number(b[2]) * 100) / totalMarketValue).toFixed(2) + "%"}</td></tr>`;
                     }
 
                 })
-                innerHtml += `<tr class='h-px bg-grey-weak'></tr></thead>`;
+                innerHtml += `<tr class='h-px bg-tooltip-row'></tr></thead>`;
 
                 const selected = bodyLines[selectedBarElement]
 
-                innerHtml += `<tbody class='text-[10px] text-tab-active-color font-semibold'>`;
+                innerHtml += `<tbody class='text-[10px] text-primary font-semibold'>`;
 
                 let j = 0;
 
@@ -145,7 +159,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                 })
 
                 bodyLines.forEach(function (body, i) {
-                    
+
                     curContextObj.chart.config._config.data.datasets[i].backgroundColor = "#6F6E84";
 
                     if (j < 5 && selected[2] !== body[2]) {
@@ -155,11 +169,11 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                             margin = 'pt-4 mb-1'
                         else
                             margin = 'my-1'
-                        const td1 = `<td class='text-grey-text flex flex-row items-center mx-2 ${margin}'>
+                        const td1 = `<td class='text-secondary flex flex-row items-center mx-2 ${margin}'>
                           <div class='w-2 h-2 rounded-full mr-2.5 border-solid' style="background-color: ${CONSTANT['COIN_COLORS'][body[0]["label"].replace("-USD", "")][0]
                             }"></div>${body[0]["label"].replace("-USD", "")}
                     </td>`;
-                        const td2 = `<td class='text-grey-text text-right items-center pr-5 mx-1 ${margin}'>${formattedNum(body[2], true)}</td>`;
+                        const td2 = `<td class='text-secondary text-right items-center pr-5 mx-1 ${margin}'>${formattedNum(body[2], true)}</td>`;
                         const td3 = `<td class='flex flex-row justify-end mx-2 ${margin}'>${((Number(body[2]) * 100) / totalMarketValue).toFixed(2) + "%"
                             }</td>`;
                         innerHtml += `<tr class='p-4'">
@@ -173,33 +187,33 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                 });
                 curContextObj.chart.config._config.data.datasets[selectedBarElement].backgroundColor = CONSTANT['COIN_COLORS'][selected[0]["label"].replace("-USD", "")][0];
                 if (selectedCoin === "All Coins") {
-                    innerHtml += `<tr><td class='text-grey-text flex flex-row items-center mx-2 mt-1 pb-4'>
+                    innerHtml += `<tr><td class='text-secondary flex flex-row items-center mx-2 mt-1 pb-4'>
                             <div class='w-2 h-2 rounded-full mr-2.5 border-solid bg-[#eee]'></div>Other
                       </td>`;
-                    innerHtml += `<td class='text-grey-text text-right pr-5 mx-1 mt-1 pb-4'>${formattedNum(otherValue, true)}</td>`;
+                    innerHtml += `<td class='text-secondary text-right pr-5 mx-1 mt-1 pb-4'>${formattedNum(otherValue, true)}</td>`;
                     innerHtml += `<td class='flex flex-row justify-end mx-2 mt-1 pb-4'>${((Number(otherValue) * 100) / totalMarketValue).toFixed(2) + "%"
                         }</td></tr>`;
 
-                    innerHtml += `<tr class='bg-dropdown-content-hover'><td class='text-grey-text flex flex-row items-center mx-2 my-1'>
+                    innerHtml += `<tr class='bg-dropdown'><td class='text-secondary flex flex-row items-center mx-2 my-1'>
                         <div class='w-2 h-2 rounded-full mr-2.5 mb-2.5'>=</div>Total
                       </td>`;
-                    innerHtml += `<td class='text-grey-text text-right m-1 pr-5'>${formattedNum(totalMarketValue, true)}</td>`;
+                    innerHtml += `<td class='text-secondary text-right m-1 pr-5'>${formattedNum(totalMarketValue, true)}</td>`;
                     innerHtml += `<td class='flex flex-row justify-end mx-2 my-1'>100%</td></tr>`;
                 }
                 innerHtml += "</tbody>";
                 let tableRoot = tooltipEl.querySelector("table");
                 tableRoot.innerHTML = innerHtml;
                 const position = curContextObj.chart.canvas.getBoundingClientRect();
-                const { height, width } = tooltipEl.getBoundingClientRect(); 
-                const caretY = tooltipModel.caretY;
+                const { height, width } = tooltipEl.getBoundingClientRect();
+                // const caretY = tooltipModel.caretY;
                 const caretX = tooltipModel.caretX;
                 let top = position.top + event.y - height - 8;
                 let left = position.left + caretX - width / 2;
-        
+
                 // Display, position, and set styles for font
                 tooltipEl.style.opacity = 1;
                 tooltipEl.style.position = "absolute";
-        
+
                 tooltipEl.style.top = `${top}px`;
                 tooltipEl.style.left = `${left}px`;
                 tooltipEl.style.font = "Aria";
@@ -214,7 +228,7 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                 document.getElementById("chartjs-canvas").style.cursor = "default"
             }
         }
-        
+
         document.body.removeChild(tooltipEl);
         curContextObj.chart.update()
     }
@@ -226,15 +240,15 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
         if (element && element[0] && element[0].datasetIndex > -1) {
             let tooltipEl = document.getElementById("chartjs-tooltip");
             document.body.removeChild(tooltipEl);
-            setLoading (true)
-            setSelectedValue (chartData.datasets[element[0].datasetIndex]['label'])
+            setLoading(true)
+            setSelectedValue(chartData.datasets[element[0].datasetIndex]['label'])
             selectedCoin = chartData.datasets[element[0].datasetIndex]['label']
         }
-        
-    }
 
+    }
     const options = {
         maintainAspectRatio: false,
+        lineAt: average,
         plugins: {
             legend: {
                 display: false,
@@ -328,19 +342,38 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                 var xAxis = chart.scales["x"];
 
                 var barArray = chart.getDatasetMeta(chartData.datasets.length - 1).data
-                
+
                 xAxis.ticks.forEach((v, i) => {
-                    const { x, y } = barArray[v.value];
-                    var value = 0;
-                    for (let d of chart.data.datasets) {
-                        value += Number(d.data[v.value]);
+                    try {
+                        const { x, y } = barArray[v.value];
+                        var value = 0;
+                        for (let d of chart.data.datasets) {
+                            value += Number(d.data[v.value]);
+                        }
+                        ctx.textAlign = "center";
+                        ctx.font = "11px Arial";
+                        ctx.fillStyle = value > 0 ? "#C3C2D4" : "#53b300";
+                        ctx.fillText(formattedNum(value, true, false, true), x, y - 5);
+                    } catch (e) {
+                        console.log("afterDraw call failed", e.message)
                     }
-                    ctx.textAlign = "center";
-                    ctx.font = "11px Arial";
-                    ctx.fillStyle = value > 0 ? "#C3C2D4" : "#53b300";
-                    ctx.fillText(formattedNum(value, true, false ,true), x, y - 5);
                 });
                 ctx.restore();
+
+                if (typeof chart.config.options.lineAt != 'undefined') {
+                    var lineAt = chart.config.options.lineAt;
+                    var ctxPlugin = chart.ctx;
+                    var xAxe = chart.scales[chart.config.options.scales.x.id];
+                    var yAxe = chart.scales[chart.config.options.scales.y.id];
+                    if (yAxe.min !== 0) return;
+                    ctxPlugin.strokeStyle = "#C3C2D4";
+                    ctxPlugin.beginPath();
+                    lineAt = (lineAt - yAxe.min) * (100 / yAxe.max);
+                    lineAt = (100 - lineAt) / 100 * (yAxe.height) + yAxe.top;
+                    ctxPlugin.moveTo(xAxe.left, lineAt);
+                    ctxPlugin.lineTo(xAxe.right, lineAt);
+                    ctxPlugin.stroke();
+                }
             },
         },
     ];

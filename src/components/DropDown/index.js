@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState, useRef } from "react";
-import * as CONSTANT from "../../constants";
 
 const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSelectedValue }) => {
     const [dropDownSelected, setDropDownSelected] = useState(false)
@@ -13,7 +12,7 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
     data.map((item) => { keyValueData[item.key] = item.value })
 
     useEffect(() => {
-        setSelected (defaultValue)
+        setSelected(defaultValue)
     }, [defaultValue])
 
     const handleClickOutside = (event) => {
@@ -38,8 +37,8 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
             <button
                 id="dropdownButton"
                 data-dropdown-toggle="dropdown"
-                className='text-tab-active-color bg-grey-thick border border-grey-weak focus:ring-blue-500 font-medium rounded-md text-sm px-[14px] py-[5px] tracking-wide text-center inline-flex items-center dark:bg-blue-600 dark:focus:ring-blue-500 justify-between'
-                style={{width: `${width}px`}}
+                className='text-primary bg-primary border border-primary focus:ring-blue-500 font-medium rounded-md text-sm px-[14px] py-[5px] tracking-wide text-center inline-flex items-center dark:bg-blue-600 dark:focus:ring-blue-500 justify-between'
+                style={{ width: `${width}px` }}
                 type="button"
                 onClick={() => {
                     setDropDownSelected(!dropDownSelected);
@@ -67,25 +66,24 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
                 id="dropdown"
                 className={
                     dropDownSelected
-                        ? `z-10 bg-grey-thick border absolute border-grey-weak divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 mt-[8px] overflow-y-auto`
+                        ? `z-20 bg-primary border absolute border-primary divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 mt-[8px] overflow-y-auto`
                         : `hidden`
                 }
-                style={{width: `${width}px`}}
+                style={{ width: `${width}px` }}
             >
                 <ul
-                    className={`py-2 text-sm text-tab-active-color font-medium dark:text-gray-200`}
+                    className={`py-2 text-sm text-primary font-medium dark:text-gray-200`}
                     aria-labelledby="dropdownButton"
                 >
                     {data?.map((item, idx) => (
-                        <li>
+                        <li key={idx}>
                             <a
-                                key={idx}
-                                className="flex flex-row items-center px-4 py-2 hover:bg-dropdown-content-hover dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                                className="flex flex-row items-center px-4 py-2 hover:bg-dropdown dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
                                 onClick={() => {
                                     setLoading(true)
                                     setDropDownSelected(false)
                                     setSelected(item["key"])
-                                    setSelectedValue (item["key"])
+                                    setSelectedValue(item["key"])
                                 }}
                             >
                                 {item["value"]}

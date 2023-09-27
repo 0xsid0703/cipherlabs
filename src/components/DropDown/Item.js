@@ -7,6 +7,7 @@ import { CoinListContext } from '../../contexts/CoinListContext'
 const Item = ({ borderColor, valueStr }) => {
     const [toggle, setToggle] = useState(null)
     const { selectedCoinList, setSelectedCoinList } = useContext(CoinListContext)
+
     useEffect (() => {
         for (let coin of selectedCoinList) {
             if (coin === valueStr) {setToggle (true); return}
@@ -37,17 +38,14 @@ const Item = ({ borderColor, valueStr }) => {
     return (
         <li>
             <a
-                className="flex flex-row items-center px-4 py-2 hover:bg-dropdown-content-hover dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                className={clsx(`flex flex-row items-center px-4 py-2 group ${toggle?'font-bold text-secondary':'font-medium text-primary'} hover:text-secondary cursor-pointer`)}
                 onClick={() => {
                     initialize ()
-                    // setLoading(true)
-                    // setSelected(item["key"])
-                    // setSelectedValue (item["key"])
                 }}
             >
                 {
                     <div
-                        className={clsx(`w-[6px] h-[6px] rounded-full mr-2 border border-[1px] ${toggle ? "scale-150" : "scale-100"}`)}
+                        className={clsx(`w-[6px] h-[6px] rounded-full mr-2 border ${toggle ? "scale-166" : "scale-100 group-hover:scale-133"}`)}
                         style={{
                             borderColor: borderColor,
                             backgroundColor: toggle ? borderColor : "transparent"

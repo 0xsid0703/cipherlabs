@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { DydxClient } from "@dydxprotocol/v3-client";
 import Web3 from "web3";
 import Skeleton from "react-loading-skeleton";
+import { useMedia } from "react-use";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import * as CONSTANT from "../constants";
@@ -27,9 +28,9 @@ const client = new DydxClient(HTTP_HOST, {
 });
 
 const DISPLAY_COUNT_LIST = {
+  10: "Last 10",
   20: "Last 20",
   50: "Last 50",
-  70: "Last 70",
   100: "Last 100",
 };
 
@@ -52,24 +53,29 @@ const Activity = () => {
   const [timeLabel, setTimeLabel] = useState([]);
 
   const [coinData, setCoinData] = useState([]);
-  const { selectedCoinList, setSelectedCoinList } = useContext (CoinListContext)
-  console.log (selectedCoinList.length, ">>>>>")
+  const { selectedCoinList, setSelectedCoinList } = useContext(CoinListContext);
   const timeInterval = useRef(undefined);
   const DISPLAY_X_COUNT = parseInt(selectedDisplay);
+  const below800 = useMedia("(max-width: 800px)");
+
   const getCoinsData = useCallback(async () => {
     try {
-      const data = await getCoins()
-      
-      setCoinData(data.map((coin) => {
-        return {
-          key: coin["market"],
-          value: coin["baseAsset"],
-        };
-      }));
+      const data = await getCoins();
+
+      setCoinData(
+        data.map((coin) => {
+          return {
+            key: coin["market"],
+            value: coin["baseAsset"],
+          };
+        })
+      );
       setCoins(data);
-      setSelectedCoinList (data.map((coin)=>coin['market'].replace('-USD', '')))
+      setSelectedCoinList(
+        data.map((coin) => coin["market"].replace("-USD", ""))
+      );
     } catch (e) {
-      console.log ("getCoins ===> ", e)
+      console.log("getCoins ===> ", e);
       setLoading(false);
     }
   }, []);
@@ -77,7 +83,6 @@ const Activity = () => {
   useEffect(() => {
     getCoinsData();
   }, [getCoinsData]);
-
   useEffect(() => {
     if (timeInterval.current) clearInterval(timeInterval.current);
     if (selectedCoinList.length > 0) setLoading(true);
@@ -85,14 +90,18 @@ const Activity = () => {
       setCandleData([]);
       return;
     }
-    async function fetchCandleData() { console.log (selectedCoinList.length, "PPPPPPPPP")
+    async function fetchCandleData() {
       let tmp = [];
       for (let coin of selectedCoinList) {
-        const data = await client.public.getCandles({
-          market: coin + "-USD",
-          resolution: selectedInterval,
-        });
-        tmp.push(data.candles);
+        try{
+          const data = await client.public.getCandles({
+            market: coin + "-USD",
+            resolution: selectedInterval,
+          });
+          tmp.push(data.candles);
+        } catch (e) {
+          console.log ("fetchCandleData failed", e.message)
+        }
       }
       setCandleData(tmp);
     }
@@ -102,6 +111,11 @@ const Activity = () => {
     );
     fetchCandleData();
   }, [selectedCoinList, selectedInterval]);
+
+  useEffect(() => {
+    if (below800) setSelectedDisplay("20");
+    else setSelectedDisplay("100");
+  }, [below800]);
 
   const getDataSet = useCallback(() => {
     if (candleData.length === 0) {
@@ -163,14 +177,10 @@ const Activity = () => {
   }, [getDataSet]);
 
   return (
-    <div className="flex flex-col rounded-sm w-full bg-[#12121A] p-[112px] w-full h-full">
-      <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-[#1C1C28] rounded-t-lg border border-[#454258]">
+    <div className="flex flex-col rounded-sm w-full bg-secondary p-[112px] h-full">
+      <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">
         <div className="flex flex-row space-x-3">
-          <CoinsMenu
-            data={coinData}
-            width={114}
-            defaultValue={selectedCoin}
-          />
+          <CoinsMenu data={coinData} width={114} defaultValue={selectedCoin} />
           <DropDown
             data={Object.keys(CONSTANT["INTERVAL"])?.map((key, idx) => {
               return { key: key, value: CONSTANT["INTERVAL"][key][0] };
@@ -201,7 +211,7 @@ const Activity = () => {
       </div>
       {loading && (
         <div
-          className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
+          className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-primary bg-primary rounded-b-lg"
           style={{ height: "calc(100vh - 409px)" }}
         >
           <Skeleton
@@ -214,10 +224,15 @@ const Activity = () => {
       {!loading &&
         !(chartData && chartData.datasets && chartData.datasets.length > 0) && (
           <div
-            className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
+            className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l relative border-primary bg-primary rounded-b-lg"
             style={{ height: "calc(100vh - 409px)" }}
           >
-            No display data
+            <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">Please choose a coin to see data</span>
+            <Skeleton
+              baseColor="#232334"
+              style={{ height: "100%" }}
+              highlightColor="#444157"
+            />
           </div>
         )}
       {!loading &&
@@ -225,7 +240,7 @@ const Activity = () => {
         chartData.datasets &&
         chartData.datasets.length > 0 && (
           <div
-            className="px-5 py-8 border-b border-r border-l border-[#454258] bg-[#232334] rounded-b-lg"
+            className="px-5 py-8 border-b border-r border-l border-primary bg-primary rounded-b-lg"
             style={{ height: "calc(100vh - 409px)" }}
           >
             <BarChart
