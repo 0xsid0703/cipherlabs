@@ -313,7 +313,6 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                     color: "#ffffff",
                     borderColor: "red",
                 },
-                beginAtZero: false,
                 ticks: {
                     color: "#6F6E84",
                 },
@@ -326,8 +325,8 @@ const BarChart = ({ selectedCoin, chartData, coins, timeLabel, setSelectedValue,
                 },
                 border: {
                     dash: [4, 2],
+                    color: '#232334'
                 },
-                beginAtZero: false,
                 ticks: {
                     color: "#6F6E84",
                 },

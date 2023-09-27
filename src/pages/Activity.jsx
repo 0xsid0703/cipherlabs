@@ -35,9 +35,9 @@ const DISPLAY_COUNT_LIST = {
 };
 
 const BORDER_RADIUS = {
-  20: 7,
-  50: 5,
-  70: 4,
+  10: 7,
+  20: 5,
+  50: 4,
   100: 3,
 };
 
@@ -83,6 +83,7 @@ const Activity = () => {
   useEffect(() => {
     getCoinsData();
   }, [getCoinsData]);
+
   useEffect(() => {
     if (timeInterval.current) clearInterval(timeInterval.current);
     if (selectedCoinList.length > 0) setLoading(true);
@@ -109,11 +110,12 @@ const Activity = () => {
       async () => await fetchCandleData(),
       CONSTANT["INTERVAL"][selectedInterval][1]
     );
+    
     fetchCandleData();
   }, [selectedCoinList, selectedInterval]);
 
   useEffect(() => {
-    if (below800) setSelectedDisplay("20");
+    if (below800) setSelectedDisplay("10");
     else setSelectedDisplay("100");
   }, [below800]);
 
@@ -123,6 +125,8 @@ const Activity = () => {
       setChartData({});
       return;
     }
+
+    if (candleData.length !== selectedCoinList.length) return
 
     let tmp;
     if (
