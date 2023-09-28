@@ -2,35 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #303044;
-    border-radius: 4px;
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #51516D;
-    border-radius: 4px;
-    height: 82px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #454258;
-  }
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
 
-  #chartjs-tooltip table::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -8px;
-    border-width: 8px;
-    border-style: solid;
-    border-color: #303044 transparent transparent transparent;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
   }
+}
+
+.dydx-journal-header {
+  text-shadow: 0px 0px 100px #000;
+  font-family: "SF Pro Display";
+  @apply text-secondary text-2xl sm:text-4xl leading-normal font-black;
+}
+
+.dydx-analytics-header {
+  text-shadow: 0px 0px 100px #000;
+  font-family: "SF Pro Display";
+  @apply text-secondary text-2xl sm:text-4xl leading-normal font-black;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #303044;
+  border-radius: 4px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #51516d;
+  border-radius: 4px;
+  height: 82px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #454258;
+}
+
+#chartjs-tooltip table::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -8px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #303044 transparent transparent transparent;
+}

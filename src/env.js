@@ -1,4 +1,4 @@
-module.exports = {
+const env = {
     BASE_URL: "http://localhost:5000",
     API_URL: "https://api.dydx.exchange",
     RPC_URL: "https://eth.llamarpc.com",
@@ -7,3 +7,5 @@ module.exports = {
     STARK_PASS_PHRASE: "Xie95CXUaQGa4zBkwpmb",
     STARK_SECRET_KEY: "Wr1rgrY1X8jojzHBht3BE1I3qEdwP-SA08LHT1Qw",
 }
+
+export default env

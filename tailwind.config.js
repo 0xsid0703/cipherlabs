@@ -1,26 +1,46 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    './src/**/*.{js,jsx,ts,tsx}',
-    'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
-    "./node_modules/flowbite/**/*.js"
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      'xs': '480px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px'
+    },
     extend: {
       backgroundColor: {
-        'primary': '#232334',
+        'header': 'rgba(16, 24, 40, 0.25)',
+        'primary': 'rgba(16, 24, 40, 1)',
+        'v3-primary': '#232334',
         'secondary': '#12121A',
         'dropdown': '#1C1C28',
         'chart-tooltip': '#1C1C28',
       },
       borderColor: {
         'primary': '#454258',
+        'header': '#1D2939'
+      },
+      borderRadius: {
+        '2md': '10px'
       },
       textColor: {
-        'primary': '#C3C2D4',
-        'secondary': '#f7f7f7',
+        'primary': '#EAECF0',
+        'secondary': '#FCFCFD',
+        'v3-primary': '#C3C2D4',
+        'v3-secondary': '#f7f7f7',
         'accent': '#D0D5DD',
+        'green': '#1ADEC6',
+        'footer': '#98A2B3',
         'skeleton': '#6F6E84',
+      },
+      boxShadow: {
+        'small': '0px 0px 100px 0px #000'
       },
       width: {
         '330': '330px',
@@ -36,6 +56,5 @@ module.exports = {
       }
     },
   },
-  plugins: [require('flowbite/plugin')],
+  plugins: [],
 }
-
