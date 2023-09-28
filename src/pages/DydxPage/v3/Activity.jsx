@@ -181,7 +181,7 @@ const Activity = () => {
   }, [getDataSet]);
 
   return (
-    <div className="flex flex-col rounded-sm w-full bg-secondary p-[112px] h-full absolute top-[64px]">
+    <div className="flex flex-col rounded-sm w-full bg-secondary p-[112px] absolute top-[64px] bottom-[64px]">
       <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">
         <div className="flex flex-row space-x-3">
           <CoinsMenu data={coinData} width={114} defaultValue={selectedCoin} />
@@ -216,7 +216,7 @@ const Activity = () => {
       {loading && (
         <div
           className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-primary bg-v3-primary rounded-b-lg"
-          style={{ height: "calc(100vh - 409px)" }}
+          style={{ height: "100vh" }}
         >
           <Skeleton
             baseColor="#232334"
@@ -229,7 +229,7 @@ const Activity = () => {
         !(chartData && chartData.datasets && chartData.datasets.length > 0) && (
           <div
             className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l relative border-primary bg-v3-primary rounded-b-lg"
-            style={{ height: "calc(100vh - 409px)" }}
+            style={{ height: "100vh" }}
           >
             <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">Please choose a coin to see data</span>
             <Skeleton
@@ -245,7 +245,7 @@ const Activity = () => {
         chartData.datasets.length > 0 && (
           <div
             className="px-5 py-8 border-b border-r border-l border-primary bg-v3-primary rounded-b-lg"
-            style={{ height: "calc(100vh - 409px)" }}
+            style={{ height: "100vh" }}
           >
             <BarChart
               selectedCoin={selectedCoin}
