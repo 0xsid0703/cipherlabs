@@ -15,7 +15,7 @@ const AboutUsPage = () => {
         <p className="text-base italic">
           At Cipher Labs, we are craftsmen with a deep dedication to serving
           traders. Harnessing Web3 technologies, our mission is to redefine the
-          DeFi trading landscape. Whether it's advanced trading tools or active
+          DeFi trading landscape. Whether it&apos;s advanced trading tools or active
           participation in governance on premier DeFi derivatives exchanges,
           consider us your primary experts for bespoke software development
           designed to enhance your trading experiences.
@@ -25,7 +25,7 @@ const AboutUsPage = () => {
         <p className="text-4xl font-black">Our Mission</p>
         <p className="text-base">
           To empower traders in the crypto derivatives market with
-          state-of-the-art tools and analytics. We're committed to innovation,
+          state-of-the-art tools and analytics. We&apos;re committed to innovation,
           aiming to make trading more accessible, more profitable, and more
           secure for everyone.
         </p>
@@ -34,7 +34,7 @@ const AboutUsPage = () => {
         <p className="text-4xl font-black">Our Vision</p>
         <p className="text-base">
           Our vision is to become a leading provider of trading tools and
-          analytics in the DeFi space. We're working towards a future where
+          analytics in the DeFi space. We&apos;re working towards a future where
           traders have all the resources they need at their fingertips, enabling
           them to make informed decisions with ease and confidence.
         </p>
