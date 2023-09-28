@@ -141,7 +141,7 @@ const Activity = () => {
       setChartData({});
       return;
     }
-    if (candleData.length !== selectedCoinList.length) {
+    if (candleData.length !== selectedCoinList.length && selectedCoinList.length> 0) {
       await fetchCandleData ()
       return;
     }

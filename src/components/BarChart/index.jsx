@@ -365,7 +365,7 @@ const BarChart = ({
         annotations: [
           {
             type: "line",
-            drawTime: 'afterDraw',
+            drawTime: 'beforeDraw',
             mode: "horizontal",
             scalId: "y-axis-0",
             yMin: average,
