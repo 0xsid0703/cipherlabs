@@ -21,6 +21,7 @@ const Header = () => {
   const ref1 = useRef();
 
   const isDydx = window.location.pathname.startsWith(PATHS.DYDX)
+  const isAnalytics = window.location.pathname.startsWith(PATHS.ANALYTICS)
   const below600 = useMedia('(max-width: 600px)');
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const Header = () => {
   }, [toggle]);
   return (
     <>
-      <header className="fixed flex flex-row justify-between items-center w-full border-b border-header px-[22px] py-5 backdrop-blur-[2px] bg-header">
+      <header className={clsx(`fixed flex flex-row justify-between items-center w-full border-b border-header px-[22px] py-5 backdrop-blur-[2px] ${isAnalytics?"bg-v3-secondary":"bg-header"}`)}>
         <Link to="/" className="flex flex-row gap-[14px] hover:cursor-pointer w-[10%]">
           <img src={logoIcon} />
           {!below600 && <img src={CipherLabsIcon} />}

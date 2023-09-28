@@ -38,7 +38,7 @@ const AppLayout = () => {
       <main>
         <Outlet />
       </main>
-      <Footer />
+      {window.location.pathname !== PATHS.ANALYTICS && <Footer />}
     </div>
   );
 };

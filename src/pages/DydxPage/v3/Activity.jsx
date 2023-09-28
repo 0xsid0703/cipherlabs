@@ -84,33 +84,49 @@ const Activity = () => {
     getCoinsData();
   }, [getCoinsData]);
 
+  const fetchCandleData = async() => {
+    let tmp = [];
+    for (let coin of selectedCoinList) {
+      try {
+        const data = await client.public.getCandles({
+          market: coin + "-USD",
+          resolution: selectedInterval,
+        });
+        tmp.push(data.candles);
+      } catch (e) {
+        console.log("fetchCandleData failed", e.message);
+      }
+    }
+    setCandleData(tmp);
+  }
+
   useEffect(() => {
     if (timeInterval.current) clearInterval(timeInterval.current);
     if (selectedCoinList.length > 0) setLoading(true);
     else {
-      setCandleData([]);
+      // setCandleData([]);
       return;
     }
-    async function fetchCandleData() {
-      let tmp = [];
-      for (let coin of selectedCoinList) {
-        try{
-          const data = await client.public.getCandles({
-            market: coin + "-USD",
-            resolution: selectedInterval,
-          });
-          tmp.push(data.candles);
-        } catch (e) {
-          console.log ("fetchCandleData failed", e.message)
-        }
-      }
-      setCandleData(tmp);
-    }
+    // async function fetchCandleData() {
+    //   let tmp = [];
+    //   for (let coin of selectedCoinList) {
+    //     try{
+    //       const data = await client.public.getCandles({
+    //         market: coin + "-USD",
+    //         resolution: selectedInterval,
+    //       });
+    //       tmp.push(data.candles);
+    //     } catch (e) {
+    //       console.log ("fetchCandleData failed", e.message)
+    //     }
+    //   }
+    //   setCandleData(tmp);
+    // }
     timeInterval.current = setInterval(
       async () => await fetchCandleData(),
       CONSTANT["INTERVAL"][selectedInterval][1]
     );
-    
+
     fetchCandleData();
   }, [selectedCoinList, selectedInterval]);
 
@@ -119,15 +135,16 @@ const Activity = () => {
     else setSelectedDisplay("100");
   }, [below800]);
 
-  const getDataSet = useCallback(() => {
+  const getDataSet = useCallback(async () => {
     if (candleData.length === 0) {
       setLoading(false);
       setChartData({});
       return;
     }
-
-    if (candleData.length !== selectedCoinList.length) return
-
+    if (candleData.length !== selectedCoinList.length) {
+      await fetchCandleData ()
+      return;
+    }
     let tmp;
     if (
       selectedCoinList.length > 0 &&
@@ -181,7 +198,7 @@ const Activity = () => {
   }, [getDataSet]);
 
   return (
-    <div className="flex flex-col rounded-sm w-full bg-secondary p-[112px] absolute top-[64px] bottom-[64px]">
+    <div className="flex flex-col rounded-sm w-full bg-secondary p-[112px] absolute top-[65px] bottom-0">
       <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">
         <div className="flex flex-row space-x-3">
           <CoinsMenu data={coinData} width={114} defaultValue={selectedCoin} />
@@ -231,7 +248,9 @@ const Activity = () => {
             className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l relative border-primary bg-v3-primary rounded-b-lg"
             style={{ height: "100vh" }}
           >
-            <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">Please choose a coin to see data</span>
+            <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">
+              Please choose a coin to see data
+            </span>
             <Skeleton
               baseColor="#232334"
               style={{ height: "100%" }}

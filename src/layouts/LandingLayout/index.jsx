@@ -14,13 +14,18 @@ const LandingLayout = () => {
       ? METAINFO.DYDX.title
       : window.location.pathname === PATHS.ABOUTUS
       ? METAINFO.ABOUTUS.title
+      : window.location.pathname === PATHS.ANALYTICS
+      ? METAINFO.ANALYTICS.title
       : METAINFO.HOME.title;
   const description =
     window.location.pathname === PATHS.DYDX
       ? METAINFO.DYDX.description
       : window.location.pathname === PATHS.ABOUTUS
       ? METAINFO.ABOUTUS.description
+      : window.location.pathname === PATHS.ANALYTICS
+      ? METAINFO.ANALYTICS.description
       : METAINFO.HOME.description;
+
   useEffect(() => {
     const imageLoader = new Image();
     imageLoader.src = "/imgs/landing/landing_background.jpg";
@@ -42,7 +47,7 @@ const LandingLayout = () => {
           <main>
             <Outlet />
           </main>
-          <Footer />
+          {window.location.pathname !== PATHS.ANALYTICS && <Footer />}
         </div>
       )}
     </>
