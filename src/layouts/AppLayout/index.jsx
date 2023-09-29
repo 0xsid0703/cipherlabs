@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
-
 import Header from "./header";
 import Footer from "./footer";
 

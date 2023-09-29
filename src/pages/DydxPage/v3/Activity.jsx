@@ -248,9 +248,9 @@ const Activity = () => {
             className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l relative border-primary bg-v3-primary rounded-b-lg"
             style={{ height: "100vh" }}
           >
-            <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">
+            {/* <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">
               Please choose a coin to see data
-            </span>
+            </span> */}
             <Skeleton
               baseColor="#232334"
               style={{ height: "100%" }}
