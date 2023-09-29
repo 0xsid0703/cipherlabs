@@ -1,10 +1,12 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable array-callback-return */
 import { useEffect, useState, useRef } from "react";
 
 // eslint-disable-next-line react/prop-types
-const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSelectedValue }) => {
+const DropDown = ({ data, setLoading, btnstr, defaultValue, setSelectedValue }) => {
     const [dropDownSelected, setDropDownSelected] = useState(false)
     const [selected, setSelected] = useState(defaultValue)
+    const [width, setWidth] = useState (105)
 
     const wrapperRef = useRef(null);
 
@@ -32,13 +34,16 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
         };
     }, []);
 
+    useEffect(() => {
+        setWidth (wrapperRef.current.offsetWidth)
+      }, [wrapperRef.current]);
+
     return (
-        <div>
+        <div className="">
             <button
                 id="dropdownButton"
                 data-dropdown-toggle="dropdown"
-                className='text-v3-primary bg-v3-primary border border-primary focus:ring-blue-500 font-medium rounded-md text-sm px-[14px] py-[5px] tracking-wide text-center inline-flex items-center dark:bg-blue-600 dark:focus:ring-blue-500 justify-between'
-                style={{ width: `${width}px` }}
+                className='text-v3-primary w-full sm:w-[105px] bg-v3-primary border border-primary focus:ring-blue-500 font-medium rounded-md text-sm px-[14px] py-[5px] tracking-wide text-center inline-flex items-center dark:bg-blue-600 dark:focus:ring-blue-500 justify-between'
                 type="button"
                 onClick={() => {
                     setDropDownSelected(!dropDownSelected);
@@ -69,7 +74,7 @@ const DropDown = ({ data, setLoading, type, btnstr, width, defaultValue, setSele
                         ? `z-20 bg-v3-primary border absolute border-primary divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 mt-[8px] overflow-y-auto`
                         : `hidden`
                 }
-                style={{ width: `${width}px` }}
+                style={{width: `${width}px`}}
             >
                 <ul
                     className={`py-2 text-sm text-v3-primary font-medium dark:text-gray-200`}
