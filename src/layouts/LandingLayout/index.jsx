@@ -11,6 +11,8 @@ const TwitterHome = "/twitter-home.jpg"
 const OpenGraph = "/opengraph-image.png"
 
 const LandingLayout = () => {
+  const paths = window.location.href.replace ("https://", '').split("/")
+
   const [backgroundImage, setBackgroundImage] = useState(null);
   const title =
     window.location.pathname === PATHS.DYDX
@@ -46,15 +48,12 @@ const LandingLayout = () => {
           <Helmet>
             <meta name="title" content={title} />
             <meta name="description" content={description} />
-            <meta
-              property="og:url"
-              content={`https://dev.drflrk9jys9zx.amplifyapp.com${window.location.pathname}`}
-            />
+            <meta property="og:url" content={`${paths[0]}${window.location.pathname}`} />
+            <meta property="og:description" content={description} />
             <meta property="og:title" content={title} />
             <meta property="og:image" content={OpenGraph} />
             <meta property="twitter:card" content="summary_large_image" />
             <meta property="twitter:image:src" content={twitter} />
-            <meta property="og:description" content={description} />
             <title>{title}</title>
           </Helmet>
           <Header />
