@@ -18,6 +18,10 @@ export const METAINFO = {
     ABOUTUS: {
         "title": "Cipher Labs | About Us",
         "description": "Discover Cipher Labs: Dedicated craftsmen revolutionizing the DeFi landscape. Harnessing Web3, our mission is to empower traders with state-of-the-art tools and bespoke software."
+    },
+    ANALYTICS: {
+        'title': 'dYdX v3 | Volume Analytics Dashboard',
+        'description': 'Experience unparalleled insights with the dYdX v3 Volume Analytics Dashboard. Dive deep into trading volume metrics, tailor-made for astute DeFi traders.'
     }
 }
 

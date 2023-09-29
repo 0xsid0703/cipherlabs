@@ -19,6 +19,7 @@ export default {
         'primary': 'rgba(16, 24, 40, 1)',
         'v3-primary': '#232334',
         'secondary': '#12121A',
+        'v3-secondary': '#171722',
         'dropdown': '#1C1C28',
         'chart-tooltip': '#1C1C28',
       },
