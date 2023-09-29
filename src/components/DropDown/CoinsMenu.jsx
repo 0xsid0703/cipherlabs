@@ -56,6 +56,8 @@ const CoinsMenu = ({ data, defaultValue }) => {
         setWidth (wrapperRef.current.offsetWidth)
       }, [wrapperRef.current]);
 
+      console.log (width, "??????")
+
     return (
         <div className="w-full">
             <button
@@ -101,7 +103,15 @@ const CoinsMenu = ({ data, defaultValue }) => {
                     ref={wrapperDrop}
                 >
                     <ul
-                        className={clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-${menuRows} sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`)}
+                        className={
+                            menuRows === 10 ? clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-10 sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`) :
+                            menuRows === 11 ? clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-11 sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`) :
+                            menuRows === 12 ? clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-12 sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`) :
+                            menuRows === 13 ? clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-13 sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`) :
+                            menuRows === 14 ? clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-14 sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`) :
+                            menuRows === 15 ? clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-15 sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`) :
+                            clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-10 grid-flow-col sm:gap-x-[30px]`)
+                        }
                         aria-labelledby="dropdownButton"
                         style={{width: below600 ? `${width}px` : ''}}
                     >
