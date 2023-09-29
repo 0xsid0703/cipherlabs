@@ -1,16 +1,20 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useRef, useContext } from "react";
+import { useMedia } from "react-use";
 import clsx from 'clsx'
 import * as CONSTANT from "../../constant";
 import Item from './Item'
 
 import { CoinListContext } from "../../contexts/CoinListContext";
 
-const CoinsMenu = ({ data, width, defaultValue }) => {
+const CoinsMenu = ({ data, defaultValue }) => {
     const { selectedCoinList, setSelectedCoinList } = useContext(CoinListContext)
     const [dropDownSelected, setDropDownSelected] = useState(false)
     const [toggle, setToggle] = useState(true)
     const [selected, setSelected] = useState(defaultValue)
+    const [menuRows, setMenuRows] = useState(10)
+    const [width, setWidth] = useState (105)
+    const below600 = useMedia('(max-width: 600px)');
     const wrapperRef = useRef(null);
     const wrapperDrop = useRef(null)
 
@@ -21,6 +25,10 @@ const CoinsMenu = ({ data, width, defaultValue }) => {
     useEffect(() => {
         setSelected(defaultValue)
     }, [defaultValue])
+
+    useEffect (() => {
+        if (data.length > 0)setMenuRows (data.length%3 ? parseInt(data.length/3) + 1: parseInt(data.length/3))
+    }, [data.length])
 
     const handleClickOutside = (event) => {
         try {
@@ -44,13 +52,16 @@ const CoinsMenu = ({ data, width, defaultValue }) => {
         else setSelectedCoinList([])
     }, [toggle])
 
+    useEffect(() => {
+        setWidth (wrapperRef.current.offsetWidth)
+      }, [wrapperRef.current]);
+
     return (
-        <div className="">
+        <div className="w-full">
             <button
                 id="dropdownButton"
                 data-dropdown-toggle="dropdown"
-                className='text-v3-primary bg-v3-primary border border-primary focus:ring-blue-500 font-medium rounded-md text-sm px-[14px] py-[5px] tracking-wide text-center inline-flex items-center dark:bg-blue-600 dark:focus:ring-blue-500 justify-between'
-                style={{ width: `150px`, height: 32 }}
+                className='w-full sm:w-[150px] h-8 text-v3-primary bg-v3-primary border border-primary focus:ring-blue-500 font-medium rounded-md text-sm px-[14px] py-[5px] tracking-wide text-center inline-flex items-center justify-between'
                 type="button"
                 onClick={() => {
                     setDropDownSelected(!dropDownSelected)
@@ -90,8 +101,9 @@ const CoinsMenu = ({ data, width, defaultValue }) => {
                     ref={wrapperDrop}
                 >
                     <ul
-                        className={`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-10 grid-flow-col gap-x-[30px]`}
+                        className={clsx(`py-2 text-sm text-v3-primary font-medium dark:text-gray-200 grid grid-rows-${menuRows} sm:grid-rows-10 grid-flow-col sm:gap-x-[30px]`)}
                         aria-labelledby="dropdownButton"
+                        style={{width: below600 ? `${width}px` : ''}}
                     >
                         <li>
                             <a

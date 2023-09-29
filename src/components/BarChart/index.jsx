@@ -305,11 +305,13 @@ const BarChart = ({
     }
   };
   const calcXAdjust = (ctx) => {
-    if (!ctx) return -500
+    if (!ctx) return -500;
     if (chartData.datasets && chartData.datasets.length > 0)
-        return ctx.chart.chartArea.width * 2 / (chartData.datasets[0].data.length * 3) - ctx.element.width
-    return -500
-  }
+        return ctx.chart.chartArea.left - ctx.element.pointX - 23
+    return -500;
+  };
+  let tickPosition = 0
+
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -365,7 +367,7 @@ const BarChart = ({
         annotations: [
           {
             type: "line",
-            drawTime: 'beforeDraw',
+            drawTime: "beforeDraw",
             mode: "horizontal",
             scalId: "y-axis-0",
             yMin: average,
@@ -378,9 +380,11 @@ const BarChart = ({
             type: "label",
             content: ["AVG"],
             color: "#C3C2D4",
+            position: "center",
             yValue: average,
-            xValue: -1,
-            xAdjust: (ctx) => calcXAdjust (ctx)
+            xValue: 0,
+            // xAdjust: 0
+            xAdjust: (ctx) => calcXAdjust(ctx),
           },
         ],
       },
@@ -416,6 +420,9 @@ const BarChart = ({
         },
         ticks: {
           color: "#6F6E84",
+          callback: function (value, index, ticks) {
+            return value;
+          },
         },
       },
     },
@@ -459,6 +466,7 @@ const BarChart = ({
       plugins={plugins}
       width={"100%"}
       ref={curContext}
+      // eslint-disable-next-line react/jsx-no-duplicate-props
       id="chartjs-canvas"
     />
   );

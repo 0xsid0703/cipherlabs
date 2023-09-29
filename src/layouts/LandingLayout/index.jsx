@@ -6,8 +6,13 @@ import Header from "./header";
 import Footer from "./footer";
 
 import { PATHS, METAINFO } from "../../constant";
+const TwitterAnalytics = "/twitter-analytics.jpg"
+const TwitterHome = "/twitter-home.jpg"
+const OpenGraph = "/opengraph-image.png"
 
 const LandingLayout = () => {
+  const paths = window.location.href.replace ("https://", '').split("/")
+
   const [backgroundImage, setBackgroundImage] = useState(null);
   const title =
     window.location.pathname === PATHS.DYDX
@@ -25,6 +30,8 @@ const LandingLayout = () => {
       : window.location.pathname === PATHS.ANALYTICS
       ? METAINFO.ANALYTICS.description
       : METAINFO.HOME.description;
+  
+  const twitter = window.location.pathname === PATHS.ANALYTICS ? TwitterAnalytics : TwitterHome
 
   useEffect(() => {
     const imageLoader = new Image();
@@ -39,9 +46,15 @@ const LandingLayout = () => {
       {backgroundImage !== null && (
         <div className="w-full min-h-screen flex flex-col justify-between bg-[url('/imgs/landing/landing_background.jpg')] bg-cover bg-no-repeat bg-center px-[22px] py-5">
           <Helmet>
-            <meta charset="utf-8" />
-            <title>{title}</title>
+            <meta name="title" content={title} />
             <meta name="description" content={description} />
+            <meta property="og:url" content={`${paths[0]}${window.location.pathname}`} />
+            <meta property="og:description" content={description} />
+            <meta property="og:title" content={title} />
+            <meta property="og:image" content={OpenGraph} />
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:image:src" content={twitter} />
+            <title>{title}</title>
           </Helmet>
           <Header />
           <main>

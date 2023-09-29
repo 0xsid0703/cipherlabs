@@ -1,13 +1,16 @@
 import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
-
 import Header from "./header";
 import Footer from "./footer";
 
 import { PATHS, METAINFO } from "../../constant";
-import TwitterAnalytics from "../../assets/twitter-analytics.jpg"
+const TwitterAnalytics = "/twitter-analytics.jpg"
+const TwitterHome = "/twitter-home.jpg"
+const OpenGraph = "/opengraph-image.png"
 
 const AppLayout = () => {
+  const paths = window.location.href.replace ("https://", '').split("/")
+
   const title =
     window.location.pathname === PATHS.DYDX
       ? METAINFO.DYDX.title
@@ -25,14 +28,19 @@ const AppLayout = () => {
       ? METAINFO.ANALYTICS.description
       : METAINFO.HOME.description;
   
-  const twitter = window.location.pathname === PATHS.ANALYTICS ? TwitterAnalytics : undefined
+  const twitter = window.location.pathname === PATHS.ANALYTICS ? TwitterAnalytics : TwitterHome
   return (
     <div className="w-full h-screen flex flex-col justify-between bg-[url('/imgs/landing/app_background.jpg')] bg-cover bg-no-repeat bg-center overflow-auto overscroll-y-scroll no-scrollbar">
       <Helmet>
-        <meta charset="utf-8" />
         <title>{title}</title>
+        <meta name="title" content={title} />
         <meta name="description" content={description} />
-        {twitter && <meta name="twitter:image" content={twitter} />}
+        <meta property="og:url" content={`${paths[0]}${window.location.pathname}`} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={OpenGraph} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image:src" content={twitter} />
       </Helmet>
       <Header />
       <main>

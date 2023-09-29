@@ -84,7 +84,7 @@ const Activity = () => {
     getCoinsData();
   }, [getCoinsData]);
 
-  const fetchCandleData = async() => {
+  const fetchCandleData = async () => {
     let tmp = [];
     for (let coin of selectedCoinList) {
       try {
@@ -98,7 +98,7 @@ const Activity = () => {
       }
     }
     setCandleData(tmp);
-  }
+  };
 
   useEffect(() => {
     if (timeInterval.current) clearInterval(timeInterval.current);
@@ -141,8 +141,11 @@ const Activity = () => {
       setChartData({});
       return;
     }
-    if (candleData.length !== selectedCoinList.length && selectedCoinList.length> 0) {
-      await fetchCandleData ()
+    if (
+      candleData.length !== selectedCoinList.length &&
+      selectedCoinList.length > 0
+    ) {
+      await fetchCandleData();
       return;
     }
     let tmp;
@@ -198,38 +201,81 @@ const Activity = () => {
   }, [getDataSet]);
 
   return (
-    <div className="flex flex-col rounded-sm w-full bg-secondary p-[112px] absolute top-[65px] bottom-0">
-      <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">
-        <div className="flex flex-row space-x-3">
-          <CoinsMenu data={coinData} width={114} defaultValue={selectedCoin} />
+    <div className="flex flex-col rounded-sm w-full bg-secondary p-4 sm:p-[112px] absolute top-[65px] bottom-0 right-0 left-0">
+      {!below800 && (
+        <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">
+          <div className="flex flex-row space-x-3">
+            <CoinsMenu
+              data={coinData}
+              width={114}
+              defaultValue={selectedCoin}
+            />
+            <DropDown
+              data={Object.keys(CONSTANT["INTERVAL"])?.map((key) => {
+                return { key: key, value: CONSTANT["INTERVAL"][key][0] };
+              })}
+              type="interval"
+              setLoading={setLoading}
+              btnstr=""
+              defaultValue={"15MINS"}
+              setSelectedValue={(value) => {
+                setSelectedInterval(value);
+              }}
+            />
+          </div>
           <DropDown
-            data={Object.keys(CONSTANT["INTERVAL"])?.map((key) => {
-              return { key: key, value: CONSTANT["INTERVAL"][key][0] };
+            data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
+              return { key: key, value: DISPLAY_COUNT_LIST[key] };
             })}
-            type="interval"
+            type="display"
             setLoading={setLoading}
             btnstr=""
-            defaultValue={"15MINS"}
-            width={77}
+            defaultValue={selectedDisplay}
             setSelectedValue={(value) => {
-              setSelectedInterval(value);
+              setSelectedDisplay(value);
             }}
           />
         </div>
-        <DropDown
-          data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
-            return { key: key, value: DISPLAY_COUNT_LIST[key] };
-          })}
-          type="display"
-          setLoading={setLoading}
-          btnstr=""
-          defaultValue={"100"}
-          width={110}
-          setSelectedValue={(value) => {
-            setSelectedDisplay(value);
-          }}
-        />
-      </div>
+      )}
+      {below800 && (
+        <div className="flex flex-col justify-between p-4 sm:px-[18px] sm:py-[24px] bg-dropdown rounded-t-lg border border-primary">
+          <div className="flex flex-row w-full">
+            <CoinsMenu
+              data={coinData}
+              width={114}
+              defaultValue={selectedCoin}
+            />
+          </div>
+          <div className="grid grid-cols-2  mt-4 gap-4 jutify-between">
+            <DropDown
+              data={Object.keys(CONSTANT["INTERVAL"])?.map((key) => {
+                return { key: key, value: CONSTANT["INTERVAL"][key][0] };
+              })}
+              type="interval"
+              setLoading={setLoading}
+              btnstr=""
+              defaultValue={"15MINS"}
+              width={77}
+              setSelectedValue={(value) => {
+                setSelectedInterval(value);
+              }}
+            />
+            <DropDown
+              data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
+                return { key: key, value: DISPLAY_COUNT_LIST[key] };
+              })}
+              type="display"
+              setLoading={setLoading}
+              btnstr=""
+              defaultValue={selectedDisplay}
+              width={110}
+              setSelectedValue={(value) => {
+                setSelectedDisplay(value);
+              }}
+            />
+          </div>
+        </div>
+      )}
       {loading && (
         <div
           className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l border-primary bg-v3-primary rounded-b-lg"
@@ -248,9 +294,9 @@ const Activity = () => {
             className="px-[16px] pt-[13px] pb-[19px] border-b border-r border-l relative border-primary bg-v3-primary rounded-b-lg"
             style={{ height: "100vh" }}
           >
-            <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">
+            {/* <span className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-center items-center z-10 text-skeleton text-[42px] font-black leading-8">
               Please choose a coin to see data
-            </span>
+            </span> */}
             <Skeleton
               baseColor="#232334"
               style={{ height: "100%" }}
