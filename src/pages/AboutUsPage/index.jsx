@@ -6,7 +6,7 @@ import socialIcon from "/imgs/landing/social icon.png";
 
 const AboutUsPage = () => {
   return (
-    <section className="flex flex-col gap-8 py-[82px] lg:py-[189px] text-primary w-1/2 sm:w-2/3 lg:w-2/5 mx-auto px-[22px] text-justify">
+    <section className="flex flex-col gap-8 py-[82px] lg:py-[189px] text-primary w-full sm:w-2/3 lg:w-2/5 mx-auto px-[22px] text-justify">
       <p className="text-[28px] lg:text-5xl font-black">Welcome to Cipher Labs:</p>
       <section className="flex flex-col gap-4">
         <p className="text-lg md:text-2xl font-black">
