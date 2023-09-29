@@ -6,9 +6,9 @@ import Header from "./header";
 import Footer from "./footer";
 
 import { PATHS, METAINFO } from "../../constant";
-import TwitterAnalytics from "../../assets/twitter-analytics.jpg"
-import TwitterHome from "../../assets/twitter-home.jpg"
-import OpenGraph from "../../assets/opengraph-image.png"
+const TwitterAnalytics = "/twitter-analytics.jpg"
+const TwitterHome = "/twitter-home.jpg"
+const OpenGraph = "/opengraph-image.png"
 
 const LandingLayout = () => {
   const [backgroundImage, setBackgroundImage] = useState(null);
@@ -44,18 +44,11 @@ const LandingLayout = () => {
       {backgroundImage !== null && (
         <div className="w-full min-h-screen flex flex-col justify-between bg-[url('/imgs/landing/landing_background.jpg')] bg-cover bg-no-repeat bg-center px-[22px] py-5">
           <Helmet>
-            <meta charset="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes"
-            />
-            <title>{title}</title>
             <meta name="title" content={title} />
             <meta name="description" content={description} />
-            {twitter && <meta name="twitter:image" content={twitter} />}
             <meta
               property="og:url"
-              content={`https://www.cipherlabs.xyz${window.location.pathname}`}
+              content={`https://dev.drflrk9jys9zx.amplifyapp.com${window.location.pathname}`}
             />
             <meta property="og:title" content={title} />
             <meta property="og:image" content={OpenGraph} />
