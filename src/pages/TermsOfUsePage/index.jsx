@@ -7,7 +7,7 @@ const TermsOfUsePage = () => {
   }, [])
 
   return (
-    <section className="flex flex-col gap-4 py-[82px] lg:py-[189px] text-primary w-1/2 sm:w-2/3 lg:w-2/5 mx-auto px-[22px] text-justify">
+    <section className="flex flex-col gap-4 py-[82px] lg:py-[189px] text-primary w-full sm:w-2/3 lg:w-2/5 mx-auto px-[22px] text-justify">
       <section className="flex flex-col gap-4">
         <p className="text-4xl lg:text-5xl font-black">Terms Of Use</p>
         <p className="text-base">Last Updated: August 1, 2023</p>
