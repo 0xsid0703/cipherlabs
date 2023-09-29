@@ -6,6 +6,8 @@ import Footer from "./footer";
 
 import { PATHS, METAINFO } from "../../constant";
 import TwitterAnalytics from "../../assets/twitter-analytics.jpg"
+import TwitterHome from "../../assets/twitter-home.jpg"
+import OpenGraph from "../../assets/opengraph-image.png"
 
 const AppLayout = () => {
   const title =
@@ -25,14 +27,28 @@ const AppLayout = () => {
       ? METAINFO.ANALYTICS.description
       : METAINFO.HOME.description;
   
-  const twitter = window.location.pathname === PATHS.ANALYTICS ? TwitterAnalytics : undefined
+  const twitter = window.location.pathname === PATHS.ANALYTICS ? TwitterAnalytics : TwitterHome
   return (
     <div className="w-full h-screen flex flex-col justify-between bg-[url('/imgs/landing/app_background.jpg')] bg-cover bg-no-repeat bg-center overflow-auto overscroll-y-scroll no-scrollbar">
       <Helmet>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" />
         <title>{title}</title>
+        <meta name="title" content={title} />
         <meta name="description" content={description} />
         {twitter && <meta name="twitter:image" content={twitter} />}
+        <meta property="og:url" content={`https://www.cipherlabs.xyz${window.location.pathname}`} />
+        <meta property="og:title" content={title} />
+        <meta property="og:image" content={OpenGraph} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image:src" content={twitter} />
+        <meta
+          property="og:description"
+          content={description}
+        />
+        <title>
+          {title}
+        </title>
       </Helmet>
       <Header />
       <main>

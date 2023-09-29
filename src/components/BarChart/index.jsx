@@ -305,11 +305,37 @@ const BarChart = ({
     }
   };
   const calcXAdjust = (ctx) => {
-    if (!ctx) return -500
+    if (!ctx) return -500;
     if (chartData.datasets && chartData.datasets.length > 0)
-        return ctx.chart.chartArea.width * 2 / (chartData.datasets[0].data.length * 3) - ctx.element.width
-    return -500
-  }
+      return (
+        (ctx.chart.chartArea.width * 2) /
+          (chartData.datasets[0].data.length * 3) -
+        ctx.element.width
+      );
+    return -500;
+  };
+  const customTickLabelPlugin = {
+    id: "customTickLabelPlugin",
+    afterDraw(chart, args, options) {
+      const ctx = chart.ctx;
+      const xAxis = chart.scales["x"];
+      const yAxis = chart.scales["y"];
+
+      ctx.save();
+      ctx.fillStyle = "red"; // Set the color of your text
+      ctx.font = "20px Arial"; // Set the font and size of the text
+
+      xAxis.ticks.forEach((value, index) => {
+        console.log(value, ">>>>");
+        const xPosition = xAxis.getPixelForTick(index);
+        const yPosition = yAxis.bottom; // Adjust this value to position your text correctly
+        ctx.fillText("YourText", xPosition, yPosition); // Replace 'YourText' with the text you want to display
+      });
+
+      ctx.restore();
+    },
+  };
+
   const options = {
     maintainAspectRatio: false,
     plugins: {
@@ -360,12 +386,13 @@ const BarChart = ({
         },
         external: setCurContext,
       },
+      customTickLabelPlugin: {},
       annotation: {
         clip: false,
         annotations: [
           {
             type: "line",
-            drawTime: 'beforeDraw',
+            drawTime: "beforeDraw",
             mode: "horizontal",
             scalId: "y-axis-0",
             yMin: average,
@@ -378,9 +405,11 @@ const BarChart = ({
             type: "label",
             content: ["AVG"],
             color: "#C3C2D4",
+            position: "end",
             yValue: average,
-            xValue: -1,
-            xAdjust: (ctx) => calcXAdjust (ctx)
+            xValue: 0,
+            // xAdjust: 0
+            xAdjust: (ctx) => calcXAdjust(ctx),
           },
         ],
       },
@@ -416,6 +445,10 @@ const BarChart = ({
         },
         ticks: {
           color: "#6F6E84",
+          callback: function (value, index, ticks) {
+            console.log (value, index, ticks)
+            return "$" + value;
+          },
         },
       },
     },
@@ -448,6 +481,7 @@ const BarChart = ({
         ctx.restore();
       },
     },
+    customTickLabelPlugin,
   ];
 
   return (
@@ -459,6 +493,7 @@ const BarChart = ({
       plugins={plugins}
       width={"100%"}
       ref={curContext}
+      // eslint-disable-next-line react/jsx-no-duplicate-props
       id="chartjs-canvas"
     />
   );

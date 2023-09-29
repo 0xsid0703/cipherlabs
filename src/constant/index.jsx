@@ -3,7 +3,8 @@ export const PATHS = {
     TERMSOFUSE: "/terms-of-use",
     PRIVACY: "/privacy-policy",
     DYDX: "/dydx",
-    ANALYTICS: "/dydx/v3/volume"
+    ANALYTICS: "/dydx/v3/volume",
+    HOME: '/'
 }
 
 export const METAINFO = {
