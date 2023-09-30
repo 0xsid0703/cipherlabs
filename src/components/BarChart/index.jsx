@@ -118,10 +118,9 @@ const BarChart = ({
       "flex-col",
       "px-5",
       "py-5",
-      "absolute",
       "rounded-md",
       "bg-chart-tooltip",
-      "w-330"
+      "fixed"
     );
 
     // Hide if no tooltip
@@ -265,7 +264,7 @@ const BarChart = ({
 
         // Display, position, and set styles for font
         tooltipEl.style.opacity = 1;
-        tooltipEl.style.position = "absolute";
+        tooltipEl.style.position = "fixed";
 
         tooltipEl.style.top = `${top}px`;
         tooltipEl.style.left = `${left}px`;
