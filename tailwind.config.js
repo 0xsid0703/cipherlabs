@@ -21,7 +21,7 @@ export default {
         'secondary': '#12121A',
         'v3-secondary': '#171722',
         'dropdown': '#1C1C28',
-        'chart-tooltip': '#1C1C28',
+        'chart-tooltip': '#303040',
       },
       borderColor: {
         'primary': '#454258',
