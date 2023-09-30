@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState } from "react";
 import { Route, Routes } from "react-router-dom";
+
+import { HelmetProvider } from "react-helmet-async";
 
 import LandingLayout from "./layouts/LandingLayout";
 import AppLayout from "./layouts/AppLayout";
@@ -23,22 +25,24 @@ function App() {
   );
 
   return (
-    <CoinListContext.Provider value={contextValue}>
-      <div className="align-middle">
-        <Routes>
-          <Route element={<LandingLayout />}>
-            <Route path="/" element={<LandingPage />} />
-          </Route>
-          <Route element={<AppLayout />}>
-            <Route path={PATHS.TERMSOFUSE} element={<TermsOfUsePage />} />
-            <Route path={PATHS.PRIVACY} element={<PrivacyPolicyPage />} />
-            <Route path={PATHS.ABOUTUS} element={<AboutUsPage />} />
-            <Route path={PATHS.DYDX} element={<DydxPage />} />
-            <Route path={PATHS.ANALYTICS} element={<Activity />} />
-          </Route>
-        </Routes>
-      </div>
-    </CoinListContext.Provider>
+    <HelmetProvider>
+      <CoinListContext.Provider value={contextValue}>
+        <div className="align-middle">
+          <Routes>
+            <Route element={<LandingLayout />}>
+              <Route path="/" element={<LandingPage />} />
+            </Route>
+            <Route element={<AppLayout />}>
+              <Route path={PATHS.TERMSOFUSE} element={<TermsOfUsePage />} />
+              <Route path={PATHS.PRIVACY} element={<PrivacyPolicyPage />} />
+              <Route path={PATHS.ABOUTUS} element={<AboutUsPage />} />
+              <Route path={PATHS.DYDX} element={<DydxPage />} />
+              <Route path={PATHS.ANALYTICS} element={<Activity />} />
+            </Route>
+          </Routes>
+        </div>
+      </CoinListContext.Provider>
+    </HelmetProvider>
   );
 }
 
