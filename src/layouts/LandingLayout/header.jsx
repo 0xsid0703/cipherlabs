@@ -61,8 +61,8 @@ const Header = () => {
   return (
     <header className="flex flex-row justify-between items-center w-full">
       <Link to="/" className="flex flex-row gap-[14px] hover:cursor-pointer">
-        <img src={logoIcon} />
-        {!below600 && <img src={CipherLabsIcon} />}
+        <img src={logoIcon} className="min-w-6" />
+        {!below600 && <img src={CipherLabsIcon} className="min-w-[124px]" />}
       </Link>
       <img
         className="hover:cursor-pointer"

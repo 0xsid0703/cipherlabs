@@ -68,8 +68,8 @@ const Header = () => {
     <>
       <header className={clsx(`fixed flex flex-row justify-between items-center w-full border-b border-header px-[22px] py-5 backdrop-blur-[2px] ${isAnalytics?"bg-v3-secondary":"bg-header"}`)}>
         <Link to="/" className="flex flex-row gap-[14px] hover:cursor-pointer w-[10%]">
-          <img src={logoIcon} />
-          {!below600 && <img src={CipherLabsIcon} />}
+          <img src={logoIcon} className="min-w-6"/>
+          {!below600 && <img src={CipherLabsIcon} className="min-w-[124px]"/>}
         </Link>
         {isDydx && <img className="cursor-pointer" src={below600?dydxLogo : dydxIcon} />}
         <div className="flex flex-row justify-end w-[10%] h-6 text-right">
