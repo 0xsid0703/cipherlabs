@@ -56,7 +56,7 @@ const Activity = () => {
   const { selectedCoinList, setSelectedCoinList } = useContext(CoinListContext);
   const timeInterval = useRef(undefined);
   const DISPLAY_X_COUNT = parseInt(selectedDisplay);
-  const below800 = useMedia("(max-width: 800px)");
+  const below600 = useMedia("(max-width: 600px)");
 
   const getCoinsData = useCallback(async () => {
     try {
@@ -131,10 +131,10 @@ const Activity = () => {
   }, [selectedCoinList, selectedInterval]);
 
   useEffect(() => {
-    if (below800) setSelectedDisplay("10");
+    if (below600) setSelectedDisplay("10");
     else setSelectedDisplay("100");
-  }, [below800]);
-
+  }, [below600]);
+  
   const getDataSet = useCallback(async () => {
     if (candleData.length === 0) {
       setLoading(false);
@@ -202,7 +202,7 @@ const Activity = () => {
 
   return (
     <div className="flex flex-col rounded-sm w-full bg-secondary p-4 sm:p-[112px] absolute top-[65px] bottom-0 right-0 left-0">
-      {!below800 && (
+      {!below600 && (
         <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">
           <div className="flex flex-row space-x-3">
             <CoinsMenu
@@ -237,7 +237,7 @@ const Activity = () => {
           />
         </div>
       )}
-      {below800 && (
+      {below600 && (
         <div className="flex flex-col justify-between p-4 sm:px-[18px] sm:py-[24px] bg-dropdown rounded-t-lg border border-primary">
           <div className="flex flex-row w-full">
             <CoinsMenu
