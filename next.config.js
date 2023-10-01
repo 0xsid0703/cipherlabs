@@ -6,7 +6,10 @@ module.exports = {
     return config;
   },
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
+  optimization: {
+    minimize : false,
+  },
   images: {
     unoptimized: true,
   },

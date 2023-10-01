@@ -8,6 +8,7 @@
     "plugin:react/recommended",
     "plugin:@next/next/recommended",
     "next/core-web-vitals",
+    "next",
     "prettier"
   ],
   "parserOptions": {
@@ -30,6 +31,7 @@
     "react/self-closing-comp": 2,
     "react/react-in-jsx-scope": 0,
     "@next/next/no-img-element": 0,
+    "@next/next/no-page-custom-font": 0,
     "react/no-unescaped-entities": 0,
     "import/no-useless-path-segments": 1,
     "no-unused-vars": [
