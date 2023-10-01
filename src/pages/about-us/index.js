@@ -19,7 +19,7 @@ const socialIcon = "/assets/imgs/landing/social icon.png";
 export default function AboutUsPage () {
   
   return (
-    <Page title={METAINFO.ABOUTUS.title} description={METAINFO.ABOUTUS.title} twitter={METAINFO.ABOUTUS.twitter}>
+    <Page title={METAINFO.ABOUTUS.title} description={METAINFO.ABOUTUS.description} twitter={METAINFO.ABOUTUS.twitter}>
       <section className="flex flex-col gap-8 py-[82px] lg:py-[189px] text-primary w-full sm:w-2/3 lg:w-2/5 mx-auto px-[22px] text-justify">
         <p className="text-[28px] lg:text-5xl font-black">Welcome to Cipher Labs:</p>
         <section className="flex flex-col gap-4">

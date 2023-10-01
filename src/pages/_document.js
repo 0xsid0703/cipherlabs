@@ -33,16 +33,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <meta
-            name="title"
-            content="Cipher Labs"
-          />
-
-          <meta
-            name="description"
-            content="Crafting tools & analytics, providing elite solutions for DeFi trading."
-          />
-
           <meta name="author" content="burner0621" />
         </Head>
 

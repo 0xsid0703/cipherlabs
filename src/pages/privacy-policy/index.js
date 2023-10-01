@@ -10,7 +10,7 @@ PrivacyPolicyPage.getLayout = function getLayout(page) {
 export default function PrivacyPolicyPage () {
   
   return (
-    <Page title={METAINFO.HOME.title} description={METAINFO.HOME.title} twitter={METAINFO.HOME.twitter}>
+    <Page title={METAINFO.HOME.title} description={METAINFO.HOME.description} twitter={METAINFO.HOME.twitter}>
       <section className="flex flex-col gap-4 py-[82px] lg:py-[189px] text-primary w-full sm:w-2/3 lg:w-2/5 mx-auto px-[22px] text-justify">
         <section className="flex flex-col gap-4">
           <p className="text-4xl lg:text-5xl font-black">Privacy Policy</p>

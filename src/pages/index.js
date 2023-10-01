@@ -13,7 +13,7 @@ Index.getLayout = function getLayout(page) {
 export default function Index() {
   
   return (
-    <Page title={METAINFO.HOME.title} description={METAINFO.HOME.title} twitter={METAINFO.HOME.twitter}>
+    <Page title={METAINFO.HOME.title} description={METAINFO.HOME.description} twitter={METAINFO.HOME.twitter}>
       <div className="flex flex-col gap-6 items-center mx-auto text-center">
         <p className="text-5xl xl:text-[64px] 2xl:text-[96px] 3xl:text-[96px] 4xl:text-[96px] 5xl:text-[96px] 6xl:text-[96px] font-black text-secondary" style={{
           lineHeight: 'normal',

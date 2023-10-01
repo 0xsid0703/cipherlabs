@@ -219,7 +219,7 @@ export default function Activity () {
   }, [getDataSet]);
 
   return (
-    <Page title={METAINFO.ANALYTICS.title} description={METAINFO.ANALYTICS.title} twitter={METAINFO.ANALYTICS.twitter}>
+    <Page title={METAINFO.ANALYTICS.title} description={METAINFO.ANALYTICS.description} twitter={METAINFO.ANALYTICS.twitter}>
       <div className="flex flex-col rounded-sm w-full bg-secondary p-4 sm:p-[112px] absolute top-[65px] bottom-0 right-0 left-0">
         {!below600 && (
           <div className="flex flex-row justify-between px-[18px] py-[24px] space-x-3 bg-dropdown rounded-t-lg border border-primary">

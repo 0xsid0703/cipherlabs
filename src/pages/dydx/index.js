@@ -13,7 +13,7 @@ DydxPage.getLayout = function getLayout(page) {
 // eslint-disable-next-line arrow-body-style
 export default function DydxPage () {
     return (
-        <Page title={METAINFO.DYDX.title} description={METAINFO.DYDX.title} twitter={METAINFO.DYDX.twitter}>
+        <Page title={METAINFO.DYDX.title} description={METAINFO.DYDX.description} twitter={METAINFO.DYDX.twitter}>
             <section className="sm:min-w-[768px] lg:w-[1056px] flex flex-col justify-center items-center m-auto sm:absolute sm:top-[64px] sm:bottom-[64px] sm:right-0 sm:left-0 mt-[85px] md:mt-0">
                 <div className="flex flex-col sm:flex-row items-start justify-between mb-8 px-5 sm:px-0">
                     {/* <div className="border-[20px] border-header rounded-2md m-8">

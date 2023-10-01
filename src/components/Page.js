@@ -8,7 +8,9 @@ import Head from 'next/head';
 const Page = forwardRef(({ children, title = '', description = '', twitter='/twitter-image.jpg', ...other }, ref) => (
   <>
     <Head>
-      <title>{`${title}`}</title>
+      <title>{title}</title>
+      
+      <meta name="title" content={title} />
       <meta name="description" content={description} />
       <meta property="og:url" content="https://www.cipherlabs.xyz" />
       <meta property="og:title" content={title}/>
@@ -18,7 +20,6 @@ const Page = forwardRef(({ children, title = '', description = '', twitter='/twi
       <meta
         property="og:description"
         content={description}
-        data-react-helmet="true"
       />
     </Head>
 
