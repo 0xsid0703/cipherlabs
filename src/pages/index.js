@@ -11,7 +11,7 @@ Index.getLayout = function getLayout(page) {
 };
 
 export default function Index() {
-  console.log ("PPPPPPPPPPPPPP")
+  console.log ("EEEEEEEEEEEEE")
   return (
     <Page title={METAINFO.HOME.title} description={METAINFO.HOME.description} twitter={METAINFO.HOME.twitter}>
       <div className="flex flex-col gap-6 items-center mx-auto text-center">
