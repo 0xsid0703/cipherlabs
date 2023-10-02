@@ -55,7 +55,6 @@ const BORDER_RADIUS = {
 };
 
 export default function Activity () {
-  const [coins, setCoins] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState("15MINS");
   const [selectedCoin, setSelectedCoin] = useState("All Coins");
   const [selectedDisplay, setSelectedDisplay] = useState("100");
@@ -84,7 +83,6 @@ export default function Activity () {
           };
         })
       );
-      setCoins(data);
       setSelectedCoinList(
         data.map((coin) => coin["market"].replace("-USD", ""))
       );
@@ -334,12 +332,7 @@ export default function Activity () {
               <BarChart
                 selectedCoin={selectedCoin}
                 chartData={chartData}
-                coins={coins}
                 timeLabel={timeLabel}
-                setLoading={setLoading}
-                setSelectedValue={(value) => {
-                  setSelectedCoin(value);
-                }}
               />
             </div>
           )}
