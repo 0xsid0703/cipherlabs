@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,6 +15,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import annotationPlugin from "chartjs-plugin-annotation";
+
+import { CoinListContext } from "../../contexts/CoinListContext"
 
 import { formattedNum } from "../../utils";
 
@@ -36,14 +38,12 @@ ChartJS.register(
 const BarChart = ({
   selectedCoin,
   chartData,
-  coins,
   timeLabel,
-  setSelectedValue,
-  setLoading,
 }) => {
   let totalMarketValue = 0;
   let otherValue = 0;
   const [average, setAverage] = useState(0);
+  const { selectedCoinList, setSelectedCoinList } = useContext(CoinListContext);
   const curContext = useRef(null);
 
   const setCurContext = useCallback((context) => {
@@ -297,11 +297,7 @@ const BarChart = ({
     if (element && element[0] && element[0].datasetIndex > -1) {
       let tooltipEl = document.getElementById("chartjs-tooltip");
       document.body.removeChild(tooltipEl);
-      setLoading(true);
-      // eslint-disable-next-line react/prop-types
-      setSelectedValue(chartData.datasets[element[0].datasetIndex]["label"]);
-      // eslint-disable-next-line react/prop-types
-      selectedCoin = chartData.datasets[element[0].datasetIndex]["label"];
+      setSelectedCoinList ([chartData.datasets[element[0].datasetIndex]["label"].replace ("-USD", "")])
     }
   };
   const calcXAdjust = (ctx) => {
