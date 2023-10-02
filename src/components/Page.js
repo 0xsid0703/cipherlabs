@@ -12,15 +12,14 @@ const Page = forwardRef(({ children, title = '', description = '', twitter='/ass
       
       <meta name="title" content={title} />
       <meta name="description" content={description} />
-      <meta property="og:url" content="https://www.cipherlabs.xyz" />
+      {/* <meta property="og:url" content="https://www.cipherlabs.xyz" /> */}
       <meta property="og:title" content={title}/>
+      <meta property="og:description" content={description} />
       <meta property="og:image" content="/assets/opengraph-image.png"/>
       <meta property="twitter:card" content="summary_large_image"/>
+      <meta property="twitter:title" content={title}/>
+      <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={twitter}/>
-      <meta
-        property="og:description"
-        content={description}
-      />
     </Head>
 
     {/* <div ref={ref} {...other}> */}
