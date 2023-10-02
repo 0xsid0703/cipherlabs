@@ -17,7 +17,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-
+          
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo.svg" />
 
           <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.svg" />
@@ -57,11 +57,11 @@ MyDocument.getInitialProps = async (ctx) => {
   ctx.renderPage = () =>
     originalRenderPage({
       enhanceApp: (App) => (props) =>
-        (
-          <CacheProvider value={cache}>
-            <App {...props} />
-          </CacheProvider>
-        ),
+      (
+        <CacheProvider value={cache}>
+          <App {...props} />
+        </CacheProvider>
+      ),
     });
 
   const initialProps = await Document.getInitialProps(ctx);
