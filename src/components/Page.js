@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 // ----------------------------------------------------------------------
 
-const Page = forwardRef(({ children, title = '', description = '', twitter='/twitter-image.jpg', ...other }, ref) => (
+const Page = forwardRef(({ children, title = '', description = '', twitter='/assets/twitter-image.jpg', ...other }, ref) => (
   <>
     <Head>
       <title>{title}</title>
