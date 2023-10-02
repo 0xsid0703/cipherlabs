@@ -55,6 +55,7 @@ const BORDER_RADIUS = {
 };
 
 export default function Activity () {
+  console.log ("EEEEEEEEEEEEEEE")
   const [coins, setCoins] = useState([]);
   const [selectedInterval, setSelectedInterval] = useState("15MINS");
   const [selectedCoin, setSelectedCoin] = useState("All Coins");
