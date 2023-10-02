@@ -16,7 +16,7 @@ const Page = forwardRef(({ children, title = '', description = '', twitter='/twi
       <meta property="og:title" content={title}/>
       <meta property="og:image" content="/assets/opengraph-image.png"/>
       <meta property="twitter:card" content="summary_large_image"/>
-      <meta property="twitter:image:src" content={twitter}/>
+      <meta property="twitter:image" content={twitter}/>
       <meta
         property="og:description"
         content={description}
