@@ -20,7 +20,7 @@ const Page = forwardRef(({ children, title = '', description = '', twitter = '/a
       <meta property="og:url" content="https://www.cipherlabs.xyz" key="og:url" />
       <meta property="og:title" content={title} key="og:title" />
       <meta property="og:description" content={description} key="og:description" />
-      <meta property="og:image" content={twitter} key="og:image" />
+      <meta property="og:image" content={`https://www.cipherlabs.xyz${twitter}`} key="og:image" />
     </Head>
 
     {/* <div ref={ref} {...other}> */}
