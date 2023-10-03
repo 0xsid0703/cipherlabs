@@ -44,12 +44,12 @@ export default function MyApp(props) {
         <meta name="twitter:card" content="summary_large_image" key="twitter:card" />
         <meta name="twitter:title" content="Cipher Lab" key="twitter:title" />
         <meta name="twitter:description" content="Crafting tools & analytics, providing elite solutions for DeFi trading." key="twitter:description" />
-        <meta name="twitter:image" content="/assets/opengraph-image.png" key="twitter:image" />
+        <meta name="twitter:image" content="https://www.cipherlabs.xyz/assets/opengraph-image.png" key="twitter:image" />
 
         <meta property="og:url" content="https://www.cipherlabs.xyz" key="og:url" />
         <meta property="og:title" content="Cipher Lab" key="og:title" />
         <meta property="og:description" content="Crafting tools & analytics, providing elite solutions for DeFi trading." key="og:description" />
-        <meta property="og:image" content="/assets/opengraph-image.png" key="og:image" />
+        <meta property="og:image" content="https://www.cipherlabs.xyz/assets/opengraph-image.png" key="og:image" />
       </Head>
 
       <CoinListContext.Provider value={contextValue}>
