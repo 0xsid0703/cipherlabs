@@ -63,6 +63,7 @@ export default function Header () {
     }
   }, [toggle]);
   return (
+    <>
     <header className="flex flex-row justify-between items-center w-full">
       <Link to="/" className="flex flex-row gap-[14px] hover:cursor-pointer">
         <img src={logoIcon} className="min-w-6" />
@@ -73,6 +74,7 @@ export default function Header () {
         src={menuIcon}
         onClick={() => setToggle(!toggle)}
       />
+    </header>
       <div
         className={clsx(
           "absolute z-[9] left-0 right-0 bottom-0 w-screen h-screen bg-primary",
@@ -81,7 +83,7 @@ export default function Header () {
         ref={ref1}
         id="menu1"
         style={{
-          top: "-100%",
+          top: "-100vh",
           transitionProperty: "opacity",
           transitionDuration: "1s",
         }}
@@ -181,6 +183,6 @@ export default function Header () {
         }}
         ref={ref}
       />
-    </header>
+    </>
   );
 };
