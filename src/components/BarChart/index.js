@@ -417,7 +417,7 @@ const BarChart = ({
         ticks: {
           color: "#6F6E84",
           callback: function (value, index, ticks) {
-            return value;
+            return formattedNum(value, false, false, true);
           },
         },
       },
