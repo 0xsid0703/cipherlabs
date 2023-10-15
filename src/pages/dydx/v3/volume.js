@@ -187,7 +187,12 @@ export default function Activity () {
       tmpTimeLabel.push(utcValue);
       let startAt = new Date(utcValue).toJSON();
       let pams = startAt.slice(0, startAt.length - 8).split("T");
-      tmpLabel.push(pams[pamId]);
+      // tmpLabel.push(pams[pamId]);
+      tmpLabel.push(new Intl.DateTimeFormat('en-AU', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false
+      }).format(new Date(c["startedAt"])))
     }
     setTimeLabel(tmpTimeLabel);
 
