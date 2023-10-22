@@ -1,9 +1,13 @@
+/* eslint-disable jsx-a11y/alt-text */
 import dynamic from 'next/dynamic'
 import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { DydxClient } from "@dydxprotocol/v3-client";
 import Web3 from "web3";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import html2canvas from 'html2canvas';
+import download from 'downloadjs';
+// import { useScreenshot } from 'use-react-screenshot'
 
 import Layout from '../../../layouts';
 
@@ -20,6 +24,15 @@ import env from "../../../env";
 
 import { CoinListContext } from "../../../contexts/CoinListContext";
 import { getCoins } from "../../../common";
+import { formattedNum } from '../../../utils';
+
+const DOWNLOAD = "/assets/imgs/dydx/download.svg"
+const logoIcon = "/assets/imgs/landing/logo.svg";
+const CipherLabsIcon = "/assets/imgs/landing/CipherLabs.svg";
+const menuIcon = "/assets/imgs/landing/menu.svg";
+const closeIcon = "/assets/imgs/landing/close.svg";
+const dydxIcon = "/assets/imgs/dydx/dydx-icon.svg";
+const dydxLogo = "/assets/imgs/dydx/dydx-logo.svg";
 
 Activity.getLayout = function getLayout(page) {
   return <Layout variant="volume">{page}</Layout>;
@@ -54,7 +67,7 @@ const BORDER_RADIUS = {
   100: 3,
 };
 
-export default function Activity () {
+export default function Activity() {
   const [selectedInterval, setSelectedInterval] = useState("15MINS");
   const [selectedCoin, setSelectedCoin] = useState("All Coins");
   const [selectedDisplay, setSelectedDisplay] = useState("100");
@@ -70,6 +83,9 @@ export default function Activity () {
   const timeInterval = useRef(undefined);
   const DISPLAY_X_COUNT = parseInt(selectedDisplay);
   const [below600, setBelow600] = useState(false)
+
+  const [average, setAverage] = useState(0);
+  const [datasum, setDatasum] = useState(0);
 
   const getCoinsData = useCallback(async () => {
     try {
@@ -150,7 +166,7 @@ export default function Activity () {
     if (below600) setSelectedDisplay("10");
     else setSelectedDisplay("100");
   }, [below600]);
-  
+
   const getDataSet = useCallback(async () => {
     if (candleData.length === 0) {
       setLoading(false);
@@ -210,6 +226,21 @@ export default function Activity () {
       d["borderRadius"] = BORDER_RADIUS[selectedDisplay];
       tmpDataset.push(d);
     }
+
+    let sum = 0, tmpdatasum=0;
+    // eslint-disable-next-line react/prop-types
+    for (let ds of tmpDataset) {
+      let p = 0;
+      for (let d of ds.data) {
+        p += Number(d);
+        tmpdatasum += Number(d)
+      }
+      if (ds.data.length > 0) sum += p / ds.data.length;
+    }
+    setAverage(sum);
+    setDatasum(tmpdatasum)
+
+
     setChartData({
       labels: tmpLabel,
       datasets: tmpDataset,
@@ -221,7 +252,19 @@ export default function Activity () {
     getDataSet();
   }, [getDataSet]);
 
+  const barRef = useRef ()
+
+  const onScreenShot = () => {
+    const chartElement = barRef.current;
+
+    html2canvas(chartElement).then(function(canvas) {
+      const chartImage = canvas.toDataURL('image/png');
+      download(chartImage, 'chart.png', 'image/png');
+    });
+  }
+
   return (
+    <>
     <Page title={METAINFO.ANALYTICS.title} description={METAINFO.ANALYTICS.description} twitter={METAINFO.ANALYTICS.twitter}>
       <div className="flex flex-col rounded-sm w-full bg-secondary p-4 md:p-[112px] absolute top-[65px] bottom-0 right-0 left-0">
         {!below600 && (
@@ -245,18 +288,21 @@ export default function Activity () {
                 }}
               />
             </div>
-            <DropDown
-              data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
-                return { key: key, value: DISPLAY_COUNT_LIST[key] };
-              })}
-              type="display"
-              setLoading={setLoading}
-              btnstr=""
-              defaultValue={selectedDisplay}
-              setSelectedValue={(value) => {
-                setSelectedDisplay(value);
-              }}
-            />
+            <div className='flex flex-row items-center justify-center gap-2'>
+              <img src={DOWNLOAD} className='w-6 h-6 cursor-pointer' onClick={onScreenShot} />
+              <DropDown
+                data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
+                  return { key: key, value: DISPLAY_COUNT_LIST[key] };
+                })}
+                type="display"
+                setLoading={setLoading}
+                btnstr=""
+                defaultValue={selectedDisplay}
+                setSelectedValue={(value) => {
+                  setSelectedDisplay(value);
+                }}
+              />
+            </div>
           </div>
         )}
         {below600 && (
@@ -342,6 +388,38 @@ export default function Activity () {
             </div>
           )}
       </div>
+      {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-6 h-6 cursor-pointer' onClick={onScreenShot} />}
     </Page>
+    <div className="fixed -top-[3000px] flex flex-col justify-between bg-dropdown rounded-t-lg border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
+        <div className='flex flex-row p-8 items-center justify-between'>
+          <div className="flex flex-row gap-[14px] hover:cursor-pointer w-[10%]">
+            <img src={logoIcon} className="min-w-6" />
+            {!below600 && <img src={CipherLabsIcon} className="min-w-[124px]" />}
+          </div>
+          <div className='flex flex-row items-center gap-[18px]'>
+            <div className='flex flex-row items-center justify-center text-v3-white text-[32px] font-black leading-normal'>{formattedNum(datasum, false, false, true)}</div>
+            <div className='flex flex-row items-center justify-center bg-header-bar rounded-[10px] text-lg font-black leading-normal text-v3-gray px-4 py-2'>10-day volume</div>
+            <div className='flex flex-row items-center justify-center text-v3-white text-[32px] font-black leading-normal ml-4'>{formattedNum(average, false, false, true)}</div>
+            <div className='flex flex-row items-center justify-center bg-header-bar rounded-[10px] text-lg font-black leading-normal text-v3-gray px-4 py-2'>average</div>
+          </div>
+          <img src={dydxIcon} className='h-6' />
+        </div>
+        {!loading &&
+          chartData &&
+          chartData.datasets &&
+          chartData.datasets.length > 0 && (
+            <div
+              className="px-5 py-8 border-b border-r border-l border-primary bg-v3-primary rounded-b-lg"
+              style={{ height: "100vh" }}
+            >
+              <BarChart
+                selectedCoin={selectedCoin}
+                chartData={chartData}
+                timeLabel={timeLabel}
+              />
+            </div>
+          )}
+    </div>
+    </>
   );
 };

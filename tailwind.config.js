@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -22,6 +23,7 @@ export default {
         'v3-secondary': '#171722',
         'dropdown': '#1C1C28',
         'chart-tooltip': '#303040',
+        'header-bar': '#303044'
       },
       borderColor: {
         'primary': '#454258',
@@ -39,6 +41,8 @@ export default {
         'green': '#1ADEC6',
         'footer': '#98A2B3',
         'skeleton': '#6F6E84',
+        'v3-white': '#F2F4F7',
+        'v3-gray': 'rgba(255, 255, 255, 0.55)'
       },
       boxShadow: {
         'small': '0px 0px 100px 0px #000'
