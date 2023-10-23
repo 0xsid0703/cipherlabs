@@ -1,3 +1,5 @@
+'use client'
+/* eslint-disable react/no-find-dom-node */
 /* eslint-disable jsx-a11y/alt-text */
 import dynamic from 'next/dynamic'
 import { useEffect, useState, useRef, useCallback, useContext } from "react";
@@ -5,9 +7,8 @@ import { DydxClient } from "@dydxprotocol/v3-client";
 import Web3 from "web3";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import html2canvas from 'html2canvas';
 import download from 'downloadjs';
-// import { useScreenshot } from 'use-react-screenshot'
+import { toPng } from 'html-to-image'
 
 import Layout from '../../../layouts';
 
@@ -39,6 +40,7 @@ Activity.getLayout = function getLayout(page) {
 };
 
 const BarChart = dynamic(() => import('../../../components/BarChart'), { ssr: false });
+// const ExportPng = dynamic(() => import('react-component-export-image'), { ssr: false });
 
 const HTTP_HOST = env.API_URL;
 
@@ -139,21 +141,6 @@ export default function Activity() {
       // setCandleData([]);
       return;
     }
-    // async function fetchCandleData() {
-    //   let tmp = [];
-    //   for (let coin of selectedCoinList) {
-    //     try{
-    //       const data = await client.public.getCandles({
-    //         market: coin + "-USD",
-    //         resolution: selectedInterval,
-    //       });
-    //       tmp.push(data.candles);
-    //     } catch (e) {
-    //       console.log ("fetchCandleData failed", e.message)
-    //     }
-    //   }
-    //   setCandleData(tmp);
-    // }
     timeInterval.current = setInterval(
       async () => await fetchCandleData(),
       CONSTANT["INTERVAL"][selectedInterval][1]
@@ -255,11 +242,12 @@ export default function Activity() {
   const barRef = useRef ()
 
   const onScreenShot = () => {
-    const chartElement = barRef.current;
-
-    html2canvas(chartElement).then(function(canvas) {
-      const chartImage = canvas.toDataURL('image/png');
-      download(chartImage, 'chart.png', 'image/png');
+    toPng(barRef.current)
+    .then(function (dataUrl) {
+      download(dataUrl, 'chart.png', 'image/png');
+    })
+    .catch(function (error) {
+      console.error('oops, something went wrong!', error);
     });
   }
 
@@ -289,11 +277,9 @@ export default function Activity() {
               />
             </div>
             <div className='flex flex-row items-center justify-center gap-2'>
-              <img src={DOWNLOAD} className='w-6 h-6 cursor-pointer' onClick={onScreenShot} />
+              <img src={DOWNLOAD} className='w-5 h-5 cursor-pointer' onClick={onScreenShot} />
               <DropDown
-                data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
-                  return { key: key, value: DISPLAY_COUNT_LIST[key] };
-                })}
+                data={Object.keys(DISPLAY_COUNT_LIST).map((key) => ({ key: key, value: DISPLAY_COUNT_LIST[key] }))}
                 type="display"
                 setLoading={setLoading}
                 btnstr=""
@@ -384,23 +370,24 @@ export default function Activity() {
                 selectedCoin={selectedCoin}
                 chartData={chartData}
                 timeLabel={timeLabel}
+                height="100%"
               />
             </div>
           )}
       </div>
-      {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-6 h-6 cursor-pointer' onClick={onScreenShot} />}
+      {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-5 h-5 cursor-pointer' onClick={onScreenShot} />}
     </Page>
-    <div className="fixed -top-[3000px] flex flex-col justify-between bg-dropdown rounded-t-lg border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
-        <div className='flex flex-row p-8 items-center justify-between'>
-          <div className="flex flex-row gap-[14px] hover:cursor-pointer w-[10%]">
+    <div className="absolute -z-[1] bg-dropdown rounded-t-lg border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
+        <div className='flex flex-row m-8 items-center justify-between'>
+          <div className="flex flex-row items-center gap-[14px] hover:cursor-pointer w-[10%]">
             <img src={logoIcon} className="min-w-6" />
             {!below600 && <img src={CipherLabsIcon} className="min-w-[124px]" />}
           </div>
           <div className='flex flex-row items-center gap-[18px]'>
-            <div className='flex flex-row items-center justify-center text-v3-white text-[32px] font-black leading-normal'>{formattedNum(datasum, false, false, true)}</div>
-            <div className='flex flex-row items-center justify-center bg-header-bar rounded-[10px] text-lg font-black leading-normal text-v3-gray px-4 py-2'>10-day volume</div>
-            <div className='flex flex-row items-center justify-center text-v3-white text-[32px] font-black leading-normal ml-4'>{formattedNum(average, false, false, true)}</div>
-            <div className='flex flex-row items-center justify-center bg-header-bar rounded-[10px] text-lg font-black leading-normal text-v3-gray px-4 py-2'>average</div>
+            <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{formattedNum(datasum, false, false, true)}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-2'>{`${selectedDisplay}-day volume`}</div>
+            <div className='flex flex-row items-center text-v3-white text-[32px] font-black ml-4'>{formattedNum(average, false, false, true)}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-2'>average</div>
           </div>
           <img src={dydxIcon} className='h-6' />
         </div>
@@ -410,16 +397,18 @@ export default function Activity() {
           chartData.datasets.length > 0 && (
             <div
               className="px-5 py-8 border-b border-r border-l border-primary bg-v3-primary rounded-b-lg"
-              style={{ height: "100vh" }}
+              style={{ height: "584px" }}
             >
               <BarChart
                 selectedCoin={selectedCoin}
                 chartData={chartData}
                 timeLabel={timeLabel}
+                height="584px"
               />
             </div>
           )}
     </div>
+    <canvas style={{width: 1200}} id="mycanvas" />
     </>
   );
 };
