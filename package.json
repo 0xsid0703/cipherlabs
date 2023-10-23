@@ -24,6 +24,7 @@
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.9.3",
     "@iconify/react": "^3.2.2",
+    "bigint-buffer": "^1.1.5",
     "change-case": "^4.1.2",
     "chart.js": "^4.4.0",
     "chartjs-plugin-annotation": "^3.0.1",

@@ -291,9 +291,7 @@ export default function Activity() {
             <div className='flex flex-row items-center justify-center gap-2'>
               <img src={DOWNLOAD} className='w-6 h-6 cursor-pointer' onClick={onScreenShot} />
               <DropDown
-                data={Object.keys(DISPLAY_COUNT_LIST).map((key) => {
-                  return { key: key, value: DISPLAY_COUNT_LIST[key] };
-                })}
+                data={Object.keys(DISPLAY_COUNT_LIST).map((key) => ({ key: key, value: DISPLAY_COUNT_LIST[key] }))}
                 type="display"
                 setLoading={setLoading}
                 btnstr=""
