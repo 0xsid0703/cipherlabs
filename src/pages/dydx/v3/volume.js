@@ -377,7 +377,7 @@ export default function Activity() {
       </div>
       {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-5 h-5 cursor-pointer' onClick={onScreenShot} />}
     </Page>
-    <div className="absolute bg-dropdown border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
+    <div className="absolute -z-[1] bg-dropdown border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
         <div className='flex flex-row py-7 px-9 items-center justify-between'>
           <div className="flex flex-row items-center gap-[14px] hover:cursor-pointer w-[10%]">
             <img src={logoIcon} className="min-w-6" />
