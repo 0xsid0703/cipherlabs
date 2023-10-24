@@ -379,10 +379,10 @@ export default function Activity() {
             </div>
           )}
       </div>
-      {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-5 h-5 cursor-pointer' onClick={onScreenShot} />}
+      {/* {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-5 h-5 cursor-pointer' onClick={onScreenShot} />} */}
     </Page>
     <div className="absolute -z-[1] bg-dropdown border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
-        <div className='flex flex-row py-7 px-[58px] items-center justify-between'>
+        <div className='flex flex-row py-7 px-8 items-center justify-between'>
           <div className='flex flex-row items-center gap-[18px]'>
             <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{CONSTANT["INTERVAL"][selectedInterval][0]}</div>
             <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>
@@ -423,7 +423,7 @@ export default function Activity() {
                               selectedDisplay === '20' ? 'absolute right-[27px] bottom-[10px] text-v3-primary text-[16px] font-black bg-header-bar px-[15px] py-[11px] rounded-[10px]' :
                               'absolute right-[35px] bottom-[10px] text-v3-primary text-[16px] font-black bg-header-bar px-[15px] py-[11px] rounded-[10px]' 
                               }>
-                dYdX volume dashboard | cipherlabs.xyz
+                dYdX | cipherlabs.xyz
               </div>
             </div>
           )}
