@@ -377,17 +377,17 @@ export default function Activity() {
       </div>
       {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-5 h-5 cursor-pointer' onClick={onScreenShot} />}
     </Page>
-    <div className="absolute -z-[1] bg-dropdown rounded-t-lg border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
-        <div className='flex flex-row m-8 items-center justify-between'>
+    <div className="absolute bg-dropdown border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
+        <div className='flex flex-row py-7 px-9 items-center justify-between'>
           <div className="flex flex-row items-center gap-[14px] hover:cursor-pointer w-[10%]">
             <img src={logoIcon} className="min-w-6" />
-            {!below600 && <img src={CipherLabsIcon} className="min-w-[124px]" />}
+            {!below600 && <img src={CipherLabsIcon} className="min-w-[125px]" />}
           </div>
           <div className='flex flex-row items-center gap-[18px]'>
             <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{formattedNum(datasum, false, false, true)}</div>
-            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-2'>{`${selectedDisplay}-day volume`}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>{`${selectedDisplay}-day volume`}</div>
             <div className='flex flex-row items-center text-v3-white text-[32px] font-black ml-4'>{formattedNum(average, false, false, true)}</div>
-            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-2'>average</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>average</div>
           </div>
           <img src={dydxIcon} className='h-6' />
         </div>
@@ -396,7 +396,7 @@ export default function Activity() {
           chartData.datasets &&
           chartData.datasets.length > 0 && (
             <div
-              className="px-5 py-8 border-b border-r border-l border-primary bg-v3-primary rounded-b-lg"
+              className="px-5 py-8 bg-v3-primary rounded-b-lg"
               style={{ height: "584px" }}
             >
               <BarChart
