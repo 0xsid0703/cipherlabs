@@ -5,6 +5,9 @@ import dynamic from 'next/dynamic'
 import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { DydxClient } from "@dydxprotocol/v3-client";
 import Web3 from "web3";
+
+import clsx from 'clsx';
+
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import download from 'downloadjs';
@@ -28,12 +31,6 @@ import { getCoins } from "../../../common";
 import { formattedNum } from '../../../utils';
 
 const DOWNLOAD = "/assets/imgs/dydx/download.svg"
-const logoIcon = "/assets/imgs/landing/logo.svg";
-const CipherLabsIcon = "/assets/imgs/landing/CipherLabs.svg";
-const menuIcon = "/assets/imgs/landing/menu.svg";
-const closeIcon = "/assets/imgs/landing/close.svg";
-const dydxIcon = "/assets/imgs/dydx/dydx-icon.svg";
-const dydxLogo = "/assets/imgs/dydx/dydx-logo.svg";
 
 Activity.getLayout = function getLayout(page) {
   return <Layout variant="volume">{page}</Layout>;
@@ -61,6 +58,13 @@ const DISPLAY_COUNT_LIST = {
   50: "Last 50",
   100: "Last 100",
 };
+
+const PADDING = {
+  10: 35,
+  20: 27,
+  50: 23,
+  100: 30,
+}
 
 const BORDER_RADIUS = {
   10: 7,
@@ -377,27 +381,36 @@ export default function Activity() {
       </div>
       {below600 && <img src={DOWNLOAD} className='absolute bottom-5 right-5 w-5 h-5 cursor-pointer' onClick={onScreenShot} />}
     </Page>
-    <div className="absolute -z-[1] bg-dropdown border border-primary w-[1400px]" id="twitterCard" ref={barRef}>
-        <div className='flex flex-row py-7 pl-[69px] pr-[89px] items-center justify-between'>
-          <div className="flex flex-row items-center gap-[18px] hover:cursor-pointer w-[10%]">
-            <img src={logoIcon} className="min-w-9" />
-            {!below600 && <img src={CipherLabsIcon} className="min-w-[166px]" />}
+    <div className="absolute -z-[1] bg-dropdown border border-primary w-[1200px]" id="twitterCard" ref={barRef}>
+        <div className='flex flex-row py-7 px-[58px] items-center justify-between'>
+          <div className='flex flex-row items-center gap-[18px]'>
+            <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{CONSTANT["INTERVAL"][selectedInterval][0]}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>
+              time frame
+            </div>
+          </div>
+          <div className='flex flex-row items-center gap-[18px]'>
+            <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{DISPLAY_COUNT_LIST[selectedDisplay]}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>
+              periods
+            </div>
           </div>
           <div className='flex flex-row items-center gap-[18px]'>
             <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{formattedNum(datasum, false, false, true)}</div>
-            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>{`${CONSTANT["INTERVAL"][selectedInterval][2]}: ${DISPLAY_COUNT_LIST[selectedDisplay]}`}</div>
-            <div className='flex flex-row items-center text-v3-white text-[32px] font-black ml-4'>{formattedNum(average, false, false, true)}</div>
-            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>average</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>total volume</div>
           </div>
-          <img src={dydxIcon} className='h-8' />
+          <div className='flex flex-row items-center gap-[18px]'>
+            <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{formattedNum(average, false, false, true)}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>average volume</div>
+          </div>
         </div>
         {!loading &&
           chartData &&
           chartData.datasets &&
           chartData.datasets.length > 0 && (
             <div
-              className="px-5 py-8 bg-v3-primary rounded-b-lg"
-              style={{ height: "731px" }}
+              className="relative px-5 py-8 bg-v3-primary rounded-b-lg"
+              style={{ height: "584px" }}
             >
               <BarChart
                 selectedCoin={selectedCoin}
@@ -405,10 +418,16 @@ export default function Activity() {
                 timeLabel={timeLabel}
                 height="584px"
               />
+              <div className={selectedDisplay === '100' ? 'absolute right-[30px] bottom-[10px] text-v3-primary text-[16px] font-black bg-header-bar px-[15px] py-[11px] rounded-[10px]' : 
+                              selectedDisplay === '50' ? 'absolute right-[23px] bottom-[10px] text-v3-primary text-[16px] font-black bg-header-bar px-[15px] py-[11px] rounded-[10px]' : 
+                              selectedDisplay === '20' ? 'absolute right-[27px] bottom-[10px] text-v3-primary text-[16px] font-black bg-header-bar px-[15px] py-[11px] rounded-[10px]' :
+                              'absolute right-[35px] bottom-[10px] text-v3-primary text-[16px] font-black bg-header-bar px-[15px] py-[11px] rounded-[10px]' 
+                              }>
+                dYdX volume dashboard | cipherlabs.xyz
+              </div>
             </div>
           )}
     </div>
-    <canvas style={{width: 1200}} id="mycanvas" />
     </>
   );
 };
