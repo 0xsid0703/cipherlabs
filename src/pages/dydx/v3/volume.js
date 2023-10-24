@@ -244,7 +244,7 @@ export default function Activity() {
   const onScreenShot = () => {
     toPng(barRef.current)
     .then(function (dataUrl) {
-      download(dataUrl, 'chart.png', 'image/png');
+      download(dataUrl, 'cipher-labs.png', 'image/png');
     })
     .catch(function (error) {
       console.error('oops, something went wrong!', error);
@@ -385,7 +385,7 @@ export default function Activity() {
           </div>
           <div className='flex flex-row items-center gap-[18px]'>
             <div className='flex flex-row items-center text-v3-white text-[32px] font-black'>{formattedNum(datasum, false, false, true)}</div>
-            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>{`${selectedDisplay}-day volume`}</div>
+            <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>{`${CONSTANT["INTERVAL"][selectedInterval][2]} volume`}</div>
             <div className='flex flex-row items-center text-v3-white text-[32px] font-black ml-4'>{formattedNum(average, false, false, true)}</div>
             <div className='flex flex-row items-center bg-header-bar rounded-[10px] text-lg font-black text-v3-gray px-4 py-[6px]'>average</div>
           </div>

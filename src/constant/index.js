@@ -75,11 +75,11 @@ export const TOOLTIP_COLORS = {
 }
 
 export const INTERVAL = {
-    "1MIN": ["1m", 60000],
-    "5MINS": ["5m", 300000],
-    "15MINS": ["15m", 900000],
-    "30MINS": ["30m", 1800000],
-    "1HOUR": ["1h", 360000],
-    "4HOURS": ["4h", 14400000],
-    "1DAY": ["1d", 86400000],
+    "1MIN": ["1m", 60000, "1-minute"],
+    "5MINS": ["5m", 300000, "5-minute"],
+    "15MINS": ["15m", 900000, "15-minute"],
+    "30MINS": ["30m", 1800000, "30-minute"],
+    "1HOUR": ["1h", 360000, "hourly"],
+    "4HOURS": ["4h", 14400000, "4-hour"],
+    "1DAY": ["1d", 86400000, "daily"],
 }
