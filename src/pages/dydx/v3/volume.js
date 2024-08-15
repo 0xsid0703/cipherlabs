@@ -6,8 +6,6 @@ import { useEffect, useState, useRef, useCallback, useContext } from "react";
 import { DydxClient } from "@dydxprotocol/v3-client";
 import Web3 from "web3";
 
-import clsx from 'clsx';
-
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import download from 'downloadjs';
@@ -24,10 +22,10 @@ import * as CONSTANT from "../../../constant";
 // import BarChart from "../../../components/BarChart";
 import DropDown from "../../../components/DropDown";
 import CoinsMenu from "../../../components/DropDown/CoinsMenu";
-import env from "../../../env";
+import {dydx_env} from "../../../env";
 
 import { CoinListContext } from "../../../contexts/CoinListContext";
-import { getCoins } from "../../../common";
+import { getCoins } from "../../../common/dydx";
 import { formattedNum } from '../../../utils';
 
 const DOWNLOAD = "/assets/imgs/dydx/download.svg"
@@ -39,16 +37,16 @@ Activity.getLayout = function getLayout(page) {
 const BarChart = dynamic(() => import('../../../components/BarChart'), { ssr: false });
 // const ExportPng = dynamic(() => import('react-component-export-image'), { ssr: false });
 
-const HTTP_HOST = env.API_URL;
+const HTTP_HOST = dydx_env.API_URL;
 
-const web3 = new Web3(env.RPC_URL);
+const web3 = new Web3(dydx_env.RPC_URL);
 const client = new DydxClient(HTTP_HOST, {
-  starkPrivateKey: env.STARK_PRIVATE_KEY,
+  starkPrivateKey: dydx_env.STARK_PRIVATE_KEY,
   web3: web3,
   apiKeyCredentials: {
-    key: env.STARK_API_KEY,
-    passphrase: env.STARK_PASS_PHRASE,
-    secret: env.STARK_SECRET_KEY,
+    key: dydx_env.STARK_API_KEY,
+    passphrase: dydx_env.STARK_PASS_PHRASE,
+    secret: dydx_env.STARK_SECRET_KEY,
   },
 });
 

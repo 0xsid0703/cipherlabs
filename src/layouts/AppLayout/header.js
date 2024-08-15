@@ -11,6 +11,9 @@ const menuIcon = "/assets/imgs/landing/menu.svg";
 const closeIcon = "/assets/imgs/landing/close.svg";
 const dydxIcon = "/assets/imgs/dydx/dydx-icon.svg";
 const dydxLogo = "/assets/imgs/dydx/dydx-logo.svg";
+const vrtxIcon = "/assets/imgs/vrtx/vrtx-icon.svg"
+const vrtxLogo = "/assets/imgs/vrtx/vrtx-logo.png"
+
 
 import { PATHS } from "../../constant";
 
@@ -26,6 +29,7 @@ export default function Header() {
   const ref1 = useRef();
 
   const isDydx = router.pathname.startsWith(PATHS.DYDX)
+  const isVRTX = router.pathname.startsWith(PATHS.VRTX)
   const isAnalytics = router.pathname.startsWith(PATHS.ANALYTICS)
 
   useEffect(() => {
@@ -68,6 +72,7 @@ export default function Header() {
           {!below600 && <img src={CipherLabsIcon} className="min-w-[124px]" />}
         </Link>
         {isDydx && <img className="cursor-pointer" src={below600 ? dydxLogo : dydxIcon} />}
+        {isVRTX && <img className="cursor-pointer" src={below600 ? vrtxLogo : vrtxIcon} />}
         <div className="flex flex-row justify-end w-[10%] h-6 text-right">
           <img
             className="hover:cursor-pointer h-6"
@@ -111,6 +116,24 @@ export default function Header() {
             onClick={() => setToggle(!toggle)}
           >
             dYdX
+          </Link>
+          <Link
+            to="/vertex"
+            className="text-accent hover:text-secondary text-2xl lg:text-[40px] font-extrabold leading-9 xl:leading-[60px] 2xl:leading-[96px] text-center w-fit mx-auto cursor-pointer"
+            style={{
+              textShadow: "0px 0px 100px #000",
+              transformStyle: "preserve-3d",
+              opacity: toggle ? 1 : 0,
+              transform: toggle
+                ? "translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)"
+                : "translate3d(0px, 30px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
+              transitionProperty: "transform, opacity",
+              transitionDuration: "1s",
+              transitionDelay: toggle ? "1s" : "0s",
+            }}
+            onClick={() => setToggle(!toggle)}
+          >
+            Vertex
           </Link>
           <Link
             to="/about-us"

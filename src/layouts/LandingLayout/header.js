@@ -113,6 +113,24 @@ export default function Header () {
             dYdX
           </Link>
           <Link
+            to="/vertex"
+            className="text-accent hover:text-secondary text-2xl lg:text-[40px] font-extrabold leading-9 xl:leading-[60px] 2xl:leading-[96px] text-center w-fit mx-auto cursor-pointer"
+            style={{
+              textShadow: "0px 0px 100px #000",
+              transformStyle: "preserve-3d",
+              opacity: toggle ? 1 : 0,
+              transform: toggle
+                ? "translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)"
+                : "translate3d(0px, 30px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)",
+              transitionProperty: "transform, opacity",
+              transitionDuration: "1s",
+              transitionDelay: toggle ? "1s" : "0s",
+            }}
+            onClick={() => setToggle(!toggle)}
+          >
+            Vertex
+          </Link>
+          <Link
             to="/about-us"
             className="text-accent hover:text-secondary text-2xl lg:text-[40px] font-extrabold leading-9 xl:leading-[60px] 2xl:leading-[96px] text-center w-fit mx-auto cursor-pointer"
             style={{
