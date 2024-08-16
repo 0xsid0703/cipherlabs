@@ -1,0 +1,8 @@
+{
+  "build": {
+    "env": {
+      "PYTHONPATH": "/usr/local/lib/python3.8/dist-packages",
+      "NODE_OPTIONS": "--build-from-source"
+    }
+  }
+}

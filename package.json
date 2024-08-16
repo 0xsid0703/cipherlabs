@@ -10,12 +10,16 @@
     "lint:fix": "eslint --fix --ext .js,.jsx .",
     "dev": "next dev -p 3035",
     "start": "next start",
+    "preinstall": "apt-get update && apt-get install -y python3-distutils",
     "build": "next build && next export",
     "build-netlify": "next build && cp -r .next _next && mv _next .next/",
     "export": "yarn build && next export -o _static",
     "clear-all": "rm -rf .next .swc _static node_modules",
     "re-start": "rm -rf .next .swc _static node_modules && yarn install && yarn dev",
     "rebuild": "rm -rf .next .swc _static node_modules && yarn install && yarn build"
+  },
+  "engines": {
+    "node": "18.x"
   },
   "dependencies": {
     "@dydxprotocol/v3-client": "^1.15.0",
