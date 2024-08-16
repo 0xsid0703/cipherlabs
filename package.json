@@ -11,6 +11,8 @@
     "dev": "next dev -p 3035",
     "start": "next start",
     "preinstall": "apt-get update && apt-get install -y python3-distutils",
+    "postinstall": "npm rebuild ffi-napi --build-from-source",
+    "install": "npm install",
     "build": "next build && next export",
     "build-netlify": "next build && cp -r .next _next && mv _next .next/",
     "export": "yarn build && next export -o _static",
