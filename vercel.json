@@ -3,7 +3,6 @@
     "env": {
       "PYTHONPATH": "/usr/local/lib/python3.8/dist-packages",
       "PYTHON_VERSION": "3.8.0"
-    },
-    "command": "npm install"
+    }
   }
 }
