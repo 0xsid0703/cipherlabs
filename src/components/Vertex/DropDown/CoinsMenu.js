@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useRef, useContext } from "react";
 import clsx from 'clsx'
-import * as CONSTANT from "../../constant";
+import * as CONSTANT from "../../../constant";
 import Item from './Item'
 
-import { CoinListContext } from "../../contexts/CoinListContext";
-import useWindowSize from "../../hooks/useWindowSize";
+import { CoinListContext } from "../../../contexts/CoinListContext";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const CoinsMenu = ({ data, defaultValue }) => {
     const { selectedCoinList, setSelectedCoinList } = useContext(CoinListContext)
@@ -76,7 +76,7 @@ const CoinsMenu = ({ data, defaultValue }) => {
                 <span className="h-">
                     {selectedCoinList.length > 0 && selectedCoinList.length === data.length && "All Coins"}
                     {selectedCoinList.length > 1 && selectedCoinList.length < data.length && "Combo"}
-                    {selectedCoinList.length === 1 && selectedCoinList[0]}
+                    {selectedCoinList.length === 1 && data.find(item=>item['value'] == selectedCoinList[0])['key']}
                     {selectedCoinList.length === 0 && "Choose a coin"}
                 </span>
                 <svg
@@ -136,14 +136,15 @@ const CoinsMenu = ({ data, defaultValue }) => {
                                 All Coins
                             </a>
                         </li>
-                        {data?.map((item, idx) => (
-                            
+                        {data?.map((item, idx) => {
+                            return (
                             <Item key={idx}
-                                borderColor={CONSTANT["COIN_COLORS"][item["value"]][0]}
+                                borderColor={CONSTANT["COIN_COLORS"][item["key"].replace("-PERP","")][0]}
                                 valueStr={item["key"]}
+                                keyStr={item['value']}
                                 clearToggle={toggle}
                             />
-                        ))}
+                        )})}
                     </ul>
                 </div>
             }

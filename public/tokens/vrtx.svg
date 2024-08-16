@@ -1,0 +1,17 @@
+<svg width="24.202" height="24.202" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12.101" cy="12.101" r="12.101" fill="url(#a)" style="fill:url(#a);stroke-width:.0699808"/>
+    <circle cx="12.096" cy="12.1" r="11.535" stroke="url(#b)" stroke-width="1.067" style="mix-blend-mode:soft-light;stroke:url(#b)"/>
+    <path d="M14.5 13.06h4.305V8.443h-1.72a1.54 1.54 0 0 0-1.466 1.073z" fill="#261939"/>
+    <path d="M13.51 16.554a1.54 1.54 0 0 1-1.426 1.117H9.916L5.5 8.44H9.91l2.205 4.617s1.609 2.737 1.394 3.496z" fill="#261939" style="stroke-width:.0667074"/>
+    <path d="M13.51 16.554c.214-.759-1.395-3.494-1.395-3.494H14.5z" fill="#432b64" style="stroke-width:.0667074"/>
+    <defs>
+        <radialGradient id="a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(28.65674 42.16284 -172.72266 117.39409 -11.876 -17.43)">
+            <stop offset=".422" stop-color="#EDE4FB"/>
+            <stop offset="1" stop-color="#A29DFB"/>
+        </radialGradient>
+        <linearGradient id="b" x1="300.793" y1="324.5" x2="11.293" y2="56" gradientUnits="userSpaceOnUse" gradientTransform="matrix(.0667 0 0 .0667 .027 -.006)">
+            <stop/>
+            <stop offset="1" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+</svg>

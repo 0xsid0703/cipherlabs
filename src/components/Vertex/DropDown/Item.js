@@ -1,16 +1,16 @@
 import {useEffect, useState, useContext} from 'react';
 import clsx from 'clsx';
-import {CoinListContext} from '../../contexts/CoinListContext';
+import {CoinListContext} from '../../../contexts/CoinListContext';
 
 // eslint-disable-next-line react/prop-types
-const Item = ({borderColor, valueStr}) => {
+const Item = ({borderColor, valueStr, keyStr}) => {
   const [toggle, setToggle] = useState (null);
   const {selectedCoinList, setSelectedCoinList} = useContext (CoinListContext);
 
   useEffect (
     () => {
       for (let coin of selectedCoinList) {
-        if (coin === valueStr) {
+        if (coin === keyStr) {
           setToggle (true);
           return;
         }
@@ -21,16 +21,17 @@ const Item = ({borderColor, valueStr}) => {
   );
 
   const initialize = () => {
+    console.log (selectedCoinList, keyStr, toggle);
     if (!toggle) {
-      if (selectedCoinList.indexOf (valueStr) !== -1) return;
+      if (selectedCoinList.indexOf (keyStr) !== -1) return;
       let tmp = selectedCoinList;
-      tmp = tmp.filter (coin => coin !== valueStr);
-      tmp.push (valueStr);
+      tmp = tmp.filter (coin => coin !== keyStr);
+      tmp.push (keyStr);
       setSelectedCoinList (tmp);
     } else {
-      if (selectedCoinList.indexOf (valueStr) === -1) return;
+      if (selectedCoinList.indexOf (keyStr) === -1) return;
       let tmp = selectedCoinList;
-      tmp = tmp.filter (coin => coin !== valueStr);
+      tmp = tmp.filter (coin => coin !== keyStr);
       setSelectedCoinList (tmp);
     }
     setToggle (!toggle);

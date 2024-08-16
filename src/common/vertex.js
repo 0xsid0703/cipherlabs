@@ -1,7 +1,9 @@
 import {createVertexClient} from '@vertex-protocol/client';
 import {JsonRpcProvider, Wallet} from 'ethers';
 import {vertex_env} from '../env';
+import {CandlestickPeriod} from '@vertex-protocol/indexer-client';
 import {BigDecimal, toPrintableObject} from '@vertex-protocol/utils';
+import {removeDecimals} from '@vertex-protocol/utils';
 
 export function getWallet () {
   return new Wallet (
@@ -22,18 +24,33 @@ export function prettyPrintJson (label, json) {
   console.log (label);
   console.log (JSON.stringify (toPrintableObject (json), null, 2));
 }
+function waitForOneSecond () {
+  return new Promise (resolve => setTimeout (resolve, 1000));
+}
+export async function getCandleData (productId, period, limit) {
+  const vertexClient = await getVertexClient ();
+  console.log ('H:', productId, period, limit);
+  await waitForOneSecond ();
+  const candlesticks = await vertexClient.market.getCandlesticks ({
+    productId: productId,
+    period: period,
+    limit: limit,
+  });
+  return candlesticks;
+}
 
 export async function getCoins () {
-  console.log ('Hello world1');
   const vertexClient = await getVertexClient ();
-  console.log ('Hello world2');
-  const allMarkets = await vertexClient.market.getAllEngineMarkets ();
-  console.log ('Hello world3');
-  prettyPrintJson ('All Markets', allMarkets);
-  const spotSymbols = await vertexClient.context.engineClient.getSymbols ({
-    productType: 0,
+  const spotSymbols = await vertexClient.context.engineClient.getSymbols ({});
+  const dd = await vertexClient.market.getCandlesticks ({
+    productId: 41,
+    period: CandlestickPeriod.DAY,
+    limit: 24,
   });
+  let tmpCoins = Object.keys (spotSymbols.symbols).map (
+    key => spotSymbols['symbols'][key]
+  );
 
-  console.log ({spotSymbols});
-  return allMarkets;
+  console.log ({tmpCoins});
+  return tmpCoins;
 }

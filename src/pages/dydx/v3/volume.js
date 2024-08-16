@@ -124,6 +124,7 @@ export default function Activity() {
           market: coin + "-USD",
           resolution: selectedInterval,
         });
+        console.log("HHHH: ", data)
         tmp.push(data.candles);
       } catch (e) {
         console.log("fetchCandleData failed", e.message);

@@ -1,9 +1,10 @@
+import {CandlestickPeriod} from '@vertex-protocol/indexer-client';
 export const PATHS = {
   ABOUTUS: '/about-us',
   TERMSOFUSE: '/terms-of-use',
   PRIVACY: '/privacy-policy',
   DYDX: '/dydx',
-  VRTX: '/vrtx',
+  VRTX: '/vertex',
   ANALYTICS: '/dydx/v3/volume',
   HOME: '/',
 };
@@ -37,7 +38,6 @@ export const METAINFO = {
 };
 
 export const COIN_COLORS = {
-  //
   BTC: ['#FEC84B'],
   ETH: ['#B692F6'],
   DOGE: ['#FEB273'],
@@ -75,6 +75,41 @@ export const COIN_COLORS = {
   EOS: ['#444CE7'],
   RUNE: ['#D1FADF'],
   UMA: ['#F97066'],
+  BLUR: ['#36BFFA'],
+  WETH: ['#F04438'],
+  JTO: ['#303044'],
+  APE: ['#84CAFF'],
+  MEME: ['#717BBC'],
+  JUP: ['#FF5733'],
+  WBTC: ['#33FF57'],
+  GALA: ['#3357FF'],
+  SUI: ['#FF33A8'],
+  STX: ['#57FF33'],
+  INJ: ['#5733FF'],
+  TON: ['#FF33C1'],
+  APT: ['#33C1FF'],
+  OP: ['#C1FF33'],
+  MNT: ['#FF3357'],
+  ONDO: ['#33FFC1'],
+  FTM: ['#C133FF'],
+  BLAST: ['#FFC133'],
+  ARB: ['#33C157'],
+  GMMEME: ['#5733C1'],
+  IMX: ['#FFC1A8'],
+  GMCI30: ['#57FFC1'],
+  SEI: ['#A857FF'],
+  MPEPE: ['#FF5733'],
+  WLD: ['#33FFC1'],
+  WIF: ['#C157FF'],
+  PYTH: ['#57C1FF'],
+  XRP: ['#FF3357'],
+  ENA: ['#5733FF'],
+  TIA: ['#FF5733'],
+  VRTX: ['#33FF57'],
+  LDO: ['#3357FF'],
+  BNB: ['#FF33A8'],
+  DYDX: ['#57FF33'],
+  USDT: ['#32D583'],
 };
 
 export const TOOLTIP_COLORS = {
@@ -89,4 +124,13 @@ export const INTERVAL = {
   '1HOUR': ['1h', 360000, 'hourly'],
   '4HOURS': ['4h', 14400000, '4-hour'],
   '1DAY': ['1d', 86400000, 'daily'],
+};
+
+export const VERTEXINTERVAL = {
+  '1 MIN': ['1m', CandlestickPeriod.MIN],
+  '5 MINS': ['5m', CandlestickPeriod.FIVE_MIN],
+  '15 MINS': ['15m', CandlestickPeriod.FIFTEEN_MIN],
+  '1 HOUR': ['1h', CandlestickPeriod.HOUR],
+  '4 HOURS': ['4h', CandlestickPeriod.FOUR_HOUR],
+  '1 DAY': ['1d', CandlestickPeriod.DAY],
 };
